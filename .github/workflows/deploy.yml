@@ -123,6 +123,20 @@ jobs:
         if: steps.check.outputs.ready == 'true'
         run: npm install --global vercel@latest
 
+      # Diagnostic: shows who the token authenticates as and which teams and
+      # projects it can see. `vercel pull` failing with "Could not retrieve
+      # Project Settings" almost always means the answer here is "not this team".
+      - name: Inspect token access
+        if: steps.check.outputs.ready == 'true'
+        continue-on-error: true
+        run: |
+          echo "--- whoami ---"
+          vercel whoami --token="$VERCEL_TOKEN" || echo "whoami FAILED — token is invalid or expired"
+          echo "--- teams the token can see ---"
+          vercel teams ls --token="$VERCEL_TOKEN" || echo "teams ls FAILED"
+          echo "--- projects in $VERCEL_ORG_ID ---"
+          vercel project ls --scope="$VERCEL_ORG_ID" --token="$VERCEL_TOKEN" || echo "project ls FAILED — the token cannot see this team"
+
       # Production for pushes to main, preview for pull requests.
       - name: Pull environment
         if: steps.check.outputs.ready == 'true'
