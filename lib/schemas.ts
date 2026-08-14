@@ -58,3 +58,57 @@ export const testimonialSchema = z.object({
 });
 
 export type TestimonialFormInput = z.input<typeof testimonialSchema>;
+
+export const blogPostSchema = z.object({
+  title: z.string().min(2, "Title is required"),
+  slug: z
+    .string()
+    .min(2, "Slug is required")
+    .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Use lowercase letters, numbers, and hyphens only"),
+  excerpt: z.string().max(300).optional(),
+  content: z.string().min(1, "Write some content first"),
+  category: z.enum(["market_trends", "buying_tips", "selling_guide", "investment", "community"]).optional(),
+  cover_image: z.string().optional(),
+  tags: z.string().optional(), // comma-separated in the form, split before saving
+  status: z.enum(["draft", "published", "scheduled", "archived"]).default("draft"),
+  published_at: z.string().optional(), // ISO date, "" means now for published
+  author: z.string().optional(),
+  meta_description: z.string().max(200).optional(),
+});
+
+export type BlogPostFormInput = z.input<typeof blogPostSchema>;
+
+export const siteSettingsSchema = z.object({
+  site_title: z.string().optional(),
+  site_description: z.string().optional(),
+  contact_phone: z.string().optional(),
+  contact_email: z.string().email("Enter a valid email").or(z.literal("")).optional(),
+  contact_address: z.string().optional(),
+  facebook_url: z.string().url("Enter a valid URL").or(z.literal("")).optional(),
+  instagram_url: z.string().url("Enter a valid URL").or(z.literal("")).optional(),
+  pinterest_url: z.string().url("Enter a valid URL").or(z.literal("")).optional(),
+  youtube_url: z.string().url("Enter a valid URL").or(z.literal("")).optional(),
+  hero_headline: z.string().optional(),
+  hero_subtitle: z.string().optional(),
+  hero_cta_primary: z.string().optional(),
+  hero_cta_secondary: z.string().optional(),
+  license_number: z.string().optional(),
+  mls_id: z.string().optional(),
+  brokerage_name: z.string().optional(),
+});
+
+export type SiteSettingsFormInput = z.input<typeof siteSettingsSchema>;
+
+export const appointmentSchema = z.object({
+  client_name: z.string().min(2, "Client name is required"),
+  client_email: z.string().email("Enter a valid email").or(z.literal("")).optional(),
+  client_phone: z.string().optional(),
+  appointment_date: z.string().min(1, "Date is required"),
+  appointment_time: z.string().min(1, "Time is required"),
+  duration_minutes: z.coerce.number().int().min(15).default(60),
+  appointment_type: z.enum(["showing", "open_house", "consultation", "closing"]).default("showing"),
+  notes: z.string().optional(),
+  property_id: z.string().uuid().or(z.literal("")).optional(),
+});
+
+export type AppointmentFormInput = z.input<typeof appointmentSchema>;

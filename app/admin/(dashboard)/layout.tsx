@@ -12,7 +12,11 @@ const links = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/leads", label: "Leads" },
   { href: "/admin/listings", label: "Listings" },
+  { href: "/admin/blog", label: "Blog" },
   { href: "/admin/testimonials", label: "Testimonials" },
+  { href: "/admin/appointments", label: "Appointments" },
+  { href: "/admin/media", label: "Media" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default async function AdminDashboardLayout({

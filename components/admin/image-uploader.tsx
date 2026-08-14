@@ -6,11 +6,10 @@ import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
-const BUCKET = "property-images";
 const MAX_SIZE_MB = 8;
 
-function extractStoragePath(url: string): string | null {
-  const marker = `/object/public/${BUCKET}/`;
+function extractStoragePath(url: string, bucket: string): string | null {
+  const marker = `/object/public/${bucket}/`;
   const i = url.indexOf(marker);
   return i === -1 ? null : url.slice(i + marker.length);
 }
@@ -18,9 +17,15 @@ function extractStoragePath(url: string): string | null {
 export function ImageUploader({
   value,
   onChange,
+  bucket = "property-images",
+  folder = "listings",
+  single = false,
 }: {
   value: string[];
   onChange: (urls: string[]) => void;
+  bucket?: string;
+  folder?: string;
+  single?: boolean;
 }) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -48,20 +53,21 @@ export function ImageUploader({
 
     for (const file of valid) {
       const ext = file.name.split(".").pop();
-      const path = `listings/${Date.now()}-${crypto.randomUUID()}.${ext}`;
-      const { error } = await supabase.storage.from(BUCKET).upload(path, file);
+      const path = `${folder}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from(bucket).upload(path, file);
       if (error) {
         toast.error(`Failed to upload ${file.name}: ${error.message}`);
         continue;
       }
-      const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+      const { data } = supabase.storage.from(bucket).getPublicUrl(path);
       uploaded.push(data.publicUrl);
     }
 
     setUploading(false);
     if (uploaded.length > 0) {
-      onChange([...value, ...uploaded]);
-      toast.success(`${uploaded.length} photo${uploaded.length > 1 ? "s" : ""} uploaded.`);
+      const next = single ? [...uploaded.slice(-1)] : [...value, ...uploaded];
+      onChange(next);
+      toast.success(`${next.length} photo${next.length > 1 ? "s" : ""} uploaded.`);
     }
   }
 
@@ -70,10 +76,10 @@ export function ImageUploader({
     const next = value.filter((_, i) => i !== index);
     onChange(next);
 
-    const path = extractStoragePath(url);
+    const path = extractStoragePath(url, bucket);
     if (path) {
       const supabase = createClient();
-      await supabase.storage.from(BUCKET).remove([path]);
+      await supabase.storage.from(bucket).remove([path]);
     }
   }
 

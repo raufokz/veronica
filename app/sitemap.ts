@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { getAllListingSlugs } from "@/lib/data/listings";
+import { getAllBlogPostSlugs } from "@/lib/data/blog";
 import { neighborhoods } from "@/lib/content/neighborhoods";
 
 const staticRoutes = [
@@ -12,6 +13,7 @@ const staticRoutes = [
   "/services/buy-a-home",
   "/home-value",
   "/neighborhoods",
+  "/blog",
   "/contact",
   "/es",
   "/legal/iabs",
@@ -21,7 +23,10 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [listingSlugs] = await Promise.all([getAllListingSlugs()]);
+  const [listingSlugs, blogSlugs] = await Promise.all([
+    getAllListingSlugs(),
+    getAllBlogPostSlugs(),
+  ]);
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((path) => ({
     url: `${siteConfig.siteUrl}${path}`,
@@ -37,6 +42,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const blogEntries: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+    url: `${siteConfig.siteUrl}/blog/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
   const neighborhoodEntries: MetadataRoute.Sitemap = neighborhoods.map((n) => ({
     url: `${siteConfig.siteUrl}/neighborhoods/${n.slug}`,
     lastModified: new Date(),
@@ -44,5 +56,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticEntries, ...listingEntries, ...neighborhoodEntries];
+  return [...staticEntries, ...listingEntries, ...blogEntries, ...neighborhoodEntries];
 }

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Lead, Property, Testimonial } from "@/types/supabase";
+import type { BlogPost, Lead, Property, Testimonial } from "@/types/supabase";
 
 export async function getAllLeads(): Promise<Lead[]> {
   const supabase = await createClient();
@@ -46,6 +46,29 @@ export async function getTestimonialByIdAdmin(id: string): Promise<Testimonial |
   const { data, error } = await supabase.from("testimonials").select("*").eq("id", id).maybeSingle();
   if (error) {
     console.error("[admin] getTestimonialByIdAdmin failed", error.message);
+    return null;
+  }
+  return data;
+}
+
+export async function getAllBlogPostsAdmin(): Promise<BlogPost[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("[admin] getAllBlogPostsAdmin failed", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+export async function getBlogPostByIdAdmin(id: string): Promise<BlogPost | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("blog_posts").select("*").eq("id", id).maybeSingle();
+  if (error) {
+    console.error("[admin] getBlogPostByIdAdmin failed", error.message);
     return null;
   }
   return data;

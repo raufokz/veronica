@@ -33,6 +33,7 @@ export function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-white/70">
             <li><Link href="/listings" className="hover:text-white">{t(dict.nav.listings, lang)}</Link></li>
             <li><Link href="/about" className="hover:text-white">{t(dict.nav.about, lang)}</Link></li>
+            <li><Link href="/blog" className="hover:text-white">{t(dict.nav.blog, lang)}</Link></li>
             <li><Link href="/services" className="hover:text-white">{t(dict.nav.services, lang)}</Link></li>
             <li><Link href="/home-value" className="hover:text-white">{lang === "es" ? "Valor de tu casa" : "Home Value"}</Link></li>
             <li><Link href="/contact" className="hover:text-white">{t(dict.nav.contact, lang)}</Link></li>

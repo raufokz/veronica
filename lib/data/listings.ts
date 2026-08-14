@@ -29,6 +29,7 @@ export type ListingFilters = {
   baths?: number;
   neighborhood?: string;
   status?: PropertyStatus;
+  limit?: number;
 };
 
 export async function getListings(filters: ListingFilters = {}): Promise<Property[]> {
@@ -43,8 +44,9 @@ export async function getListings(filters: ListingFilters = {}): Promise<Propert
   if (filters.maxPrice) query = query.lte("price", filters.maxPrice);
   if (filters.beds) query = query.gte("bedrooms", filters.beds);
   if (filters.baths) query = query.gte("bathrooms", filters.baths);
+  if (filters.limit) query = query.limit(filters.limit);
 
-  const { data, error } = await query.order("created_at", { ascending: false });
+  const { data, error } = await query.order("featured", { ascending: false }).order("created_at", { ascending: false });
 
   if (error) {
     console.error("[data] getListings failed", error.message);

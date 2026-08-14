@@ -5,6 +5,7 @@ import { AboutPreview } from "@/components/home/about-preview";
 import { Services } from "@/components/home/services";
 import { WhyVeronica } from "@/components/home/why-veronica";
 import { TestimonialsSection } from "@/components/home/testimonials-section";
+import { BlogPreview } from "@/components/home/blog-preview";
 import { ContactSection } from "@/components/home/contact-section";
 import { siteConfig } from "@/lib/site-config";
 
@@ -44,6 +45,7 @@ export default function Home() {
       <Services />
       <WhyVeronica />
       <TestimonialsSection />
+      <BlogPreview />
       <ContactSection />
     </>
   );

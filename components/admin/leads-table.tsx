@@ -10,16 +10,9 @@ import {
 } from "@/components/ui/select";
 import { updateLeadStatus } from "@/app/actions/admin-leads";
 import type { Lead, LeadStatus } from "@/types/supabase";
+import { leadStatusLabels, leadStatusColor, formatLeadStatus } from "@/lib/lead-status";
 
-const statuses: LeadStatus[] = ["new", "contacted", "nurturing", "closed", "archived"];
-
-const statusColor: Record<LeadStatus, string> = {
-  new: "bg-brand/10 text-brand",
-  contacted: "bg-blue-100 text-blue-700",
-  nurturing: "bg-gold/20 text-ink",
-  closed: "bg-green-100 text-green-700",
-  archived: "bg-black/10 text-slate",
-};
+const statuses: LeadStatus[] = leadStatusLabels.map(({ value }) => value);
 
 export function LeadsTable({ leads }: { leads: Lead[] }) {
   return (
@@ -92,13 +85,16 @@ function LeadRow({ lead }: { lead: Lead }) {
       </td>
       <td className="p-4">
         <Select value={status} onValueChange={onStatusChange} disabled={isPending}>
-          <SelectTrigger className={`h-8 border-0 ${statusColor[status]}`}>
+          <SelectTrigger
+            className="h-8 border-0 text-xs"
+            style={{ backgroundColor: `${leadStatusColor[status]}1a`, color: leadStatusColor[status] }}
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {statuses.map((s) => (
-              <SelectItem key={s} value={s} className="capitalize">
-                {s}
+              <SelectItem key={s} value={s}>
+                {formatLeadStatus(s)}
               </SelectItem>
             ))}
           </SelectContent>

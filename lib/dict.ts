@@ -7,6 +7,7 @@ export const dict = {
     about: { en: "About", es: "Acerca de" },
     services: { en: "Services", es: "Servicios" },
     neighborhoods: { en: "Neighborhoods", es: "Vecindarios" },
+    blog: { en: "Blog", es: "Blog" },
     contact: { en: "Contact", es: "Contacto" },
     bookACall: { en: "Book a call", es: "Agenda una llamada" },
   },

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
 import { dict, t } from "@/lib/dict";
@@ -8,8 +9,23 @@ import { buttonVariants } from "@/components/ui/button";
 import type { Property } from "@/types/supabase";
 import { cn } from "@/lib/utils";
 
+type StatusTab = "all" | "active" | "pending" | "sold";
+
+const tabs: Array<{ value: StatusTab; label: { en: string; es: string } }> = [
+  { value: "all", label: { en: "All", es: "Todas" } },
+  { value: "active", label: { en: "For Sale", es: "En Venta" } },
+  { value: "pending", label: { en: "Pending", es: "Pendiente" } },
+  { value: "sold", label: { en: "Sold", es: "Vendidas" } },
+];
+
 export function FeaturedListingsClient({ properties }: { properties: Property[] }) {
   const { lang } = useLanguage();
+  const [tab, setTab] = useState<StatusTab>("all");
+
+  const visible = useMemo(
+    () => (tab === "all" ? properties : properties.filter((p) => p.status === tab)),
+    [properties, tab]
+  );
 
   if (properties.length === 0) return null;
 
@@ -21,11 +37,36 @@ export function FeaturedListingsClient({ properties }: { properties: Property[] 
           {t(dict.listings.h2, lang)}
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {properties.map((property) => (
+        <div className="mt-8 flex gap-2 overflow-x-auto pb-1">
+          {tabs.map((tabItem) => {
+            const active = tab === tabItem.value;
+            return (
+              <button
+                key={tabItem.value}
+                type="button"
+                onClick={() => setTab(tabItem.value)}
+                className={cn(
+                  "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  active
+                    ? "bg-ink text-white"
+                    : "border border-black/10 text-ink/70 hover:border-ink"
+                )}
+              >
+                {t(tabItem.label, lang)}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {visible.map((property) => (
             <ListingCard key={property.id} property={property} lang={lang} />
           ))}
         </div>
+
+        {visible.length === 0 && (
+          <p className="mt-6 text-slate">No listings in this status right now.</p>
+        )}
 
         <div className="mt-10 text-center">
           <Link href="/listings" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "rounded-full px-6")}>

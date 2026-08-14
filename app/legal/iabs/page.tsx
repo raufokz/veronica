@@ -26,9 +26,9 @@ export default function IabsPage() {
       </p>
 
 <div className="rounded-xl border border-gold/40 bg-gold/10 p-5 text-sm text-ink">
-  The brokerage-completed TREC IABS form (with HomeSmart's license number, the designated
-  broker's name, and Veronica Medellin's license and supervisor information) needs to be
-  reviewed and provided by HomeSmart's compliance team, then embedded or linked on this
+  The brokerage-completed TREC IABS form (with HomeSmart&apos;s license number, the designated
+  broker&apos;s name, and Veronica Medellin&apos;s license and supervisor information) needs to be
+  reviewed and provided by HomeSmart&apos;s compliance team, then embedded or linked on this
   page as a downloadable PDF before launch.
 </div>
 

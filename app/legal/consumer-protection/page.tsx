@@ -26,7 +26,7 @@ export default function ConsumerProtectionPage() {
 <div className="rounded-xl border border-gold/40 bg-gold/10 p-5 text-sm text-ink">
   Veronica Medellin is a real estate license holder regulated by the Texas Real Estate
   Commission (TREC). TREC requires this notice to be readily accessible on a license
-  holder's website. For questions or complaints, contact TREC at the addresses and phone
+  holder&apos;s website. For questions or complaints, contact TREC at the addresses and phone
   numbers below.
 </div>
 

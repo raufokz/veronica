@@ -1,5 +1,5 @@
 import { getAllLeads } from "@/lib/data/admin";
-import { LeadsTable } from "@/components/admin/leads-table";
+import { LeadsView } from "@/components/admin/leads-view";
 
 export default async function AdminLeadsPage() {
   const leads = await getAllLeads();
@@ -7,9 +7,8 @@ export default async function AdminLeadsPage() {
   return (
     <div>
       <h1 className="font-display text-2xl">Leads</h1>
-      <p className="mt-1 text-sm text-slate">{leads.length} total</p>
       <div className="mt-6">
-        <LeadsTable leads={leads} />
+        <LeadsView leads={leads} />
       </div>
     </div>
   );
