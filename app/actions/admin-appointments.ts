@@ -12,18 +12,43 @@ export async function createAppointment(input: AppointmentFormInput): Promise<Ad
   if (!parsed.success) {
     return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid appointment." };
   }
-  const { property_id, ...rest } = parsed.data;
+  const { property_id, lead_id, ...rest } = parsed.data;
 
   const supabase = await createClient();
   const { error } = await supabase.from("appointments").insert({
     ...rest,
     property_id: property_id || null,
+    lead_id: lead_id || null,
   });
 
   if (error) {
     return { success: false, error: error.message };
   }
   await logActivity({ action: "created", entityType: "appointment", details: { name: parsed.data.client_name } });
+  revalidatePath("/admin/appointments");
+  return { success: true };
+}
+
+export async function updateAppointment(
+  id: string,
+  input: AppointmentFormInput
+): Promise<AdminActionResult> {
+  const parsed = appointmentSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid appointment." };
+  }
+  const { property_id, lead_id, ...rest } = parsed.data;
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("appointments")
+    .update({ ...rest, property_id: property_id || null, lead_id: lead_id || null })
+    .eq("id", id);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+  await logActivity({ action: "updated", entityType: "appointment", entityId: id });
   revalidatePath("/admin/appointments");
   return { success: true };
 }

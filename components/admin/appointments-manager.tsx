@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, LayoutGrid, List, Pencil } from "lucide-react";
 import { appointmentSchema, type AppointmentFormInput } from "@/lib/schemas";
 import {
   createAppointment,
+  updateAppointment,
   deleteAppointment,
   updateAppointmentStatus,
 } from "@/app/actions/admin-appointments";
@@ -22,7 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { buttonVariants } from "@/components/ui/button";
-import type { Appointment, AppointmentStatus } from "@/types/supabase";
+import { AppointmentsCalendar } from "@/components/admin/appointments-calendar";
+import type { Appointment, AppointmentStatus, Lead, Property } from "@/types/supabase";
 import { cn } from "@/lib/utils";
 
 const statusStyles: Record<AppointmentStatus, string> = {
@@ -40,8 +42,45 @@ const typeLabels: Record<string, string> = {
   closing: "Closing",
 };
 
-export function AppointmentsManager({ appointments }: { appointments: Appointment[] }) {
+function toFormValues(appt?: Appointment | null): AppointmentFormInput {
+  if (!appt) {
+    return {
+      client_name: "",
+      appointment_type: "showing",
+      duration_minutes: 60,
+      appointment_date: new Date().toISOString().slice(0, 10),
+      appointment_time: "10:00",
+      property_id: "",
+      lead_id: "",
+    };
+  }
+  return {
+    client_name: appt.client_name,
+    client_email: appt.client_email ?? "",
+    client_phone: appt.client_phone ?? "",
+    appointment_date: appt.appointment_date,
+    appointment_time: appt.appointment_time,
+    duration_minutes: appt.duration_minutes,
+    appointment_type: appt.appointment_type ?? "showing",
+    notes: appt.notes ?? "",
+    property_id: appt.property_id ?? "",
+    lead_id: appt.lead_id ?? "",
+  };
+}
+
+export function AppointmentsManager({
+  appointments,
+  listings,
+  leads,
+}: {
+  appointments: Appointment[];
+  listings: Property[];
+  leads: Lead[];
+}) {
   const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Appointment | null>(null);
+  const [view, setView] = useState<"list" | "calendar">("list");
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const {
     register,
@@ -51,23 +90,36 @@ export function AppointmentsManager({ appointments }: { appointments: Appointmen
     formState: { errors, isSubmitting },
   } = useForm<AppointmentFormInput>({
     resolver: zodResolver(appointmentSchema),
-    defaultValues: {
-      appointment_type: "showing",
-      duration_minutes: 60,
-      appointment_date: new Date().toISOString().slice(0, 10),
-      appointment_time: "10:00",
-    },
+    defaultValues: toFormValues(null),
   });
 
-  async function onCreate(values: AppointmentFormInput) {
-    const result = await createAppointment(values);
+  useEffect(() => {
+    reset(toFormValues(editing));
+  }, [editing, reset]);
+
+  async function onSubmit(values: AppointmentFormInput) {
+    const result = editing
+      ? await updateAppointment(editing.id, values)
+      : await createAppointment(values);
     if (!result.success) {
       toast.error(result.error);
     } else {
-      toast.success("Appointment scheduled.");
+      toast.success(editing ? "Appointment updated." : "Appointment scheduled.");
       setShowForm(false);
-      reset();
+      setEditing(null);
+      reset(toFormValues(null));
     }
+  }
+
+  function onEdit(appt: Appointment) {
+    setEditing(appt);
+    setShowForm(true);
+  }
+
+  function onCancelForm() {
+    setShowForm(false);
+    setEditing(null);
+    reset(toFormValues(null));
   }
 
   function onStatusChange(id: string, value: string | null) {
@@ -89,31 +141,58 @@ export function AppointmentsManager({ appointments }: { appointments: Appointmen
     });
   }
 
-  const upcoming = appointments
+  const dayFiltered = selectedDay ? appointments.filter((a) => a.appointment_date === selectedDay) : appointments;
+  const upcoming = dayFiltered
     .filter((a) => a.status === "scheduled" || a.status === "confirmed")
     .sort((a, b) => (a.appointment_date + a.appointment_time).localeCompare(b.appointment_date + b.appointment_time));
-  const past = appointments.filter((a) => !upcoming.includes(a));
+  const past = dayFiltered.filter((a) => !upcoming.includes(a));
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <p className="text-sm text-slate">{appointments.length} total</p>
-        <button
-          type="button"
-          onClick={() => setShowForm((s) => !s)}
-          className={cn(buttonVariants(), "rounded-full bg-brand hover:bg-brand/90 text-white px-5")}
-        >
-          <Plus className="size-4 mr-1" />
-          New appointment
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-full border border-black/10 p-1">
+            {(
+              [
+                { value: "list", label: "List", icon: List },
+                { value: "calendar", label: "Calendar", icon: LayoutGrid },
+              ] as const
+            ).map(({ value, label, icon: Icon }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setView(value)}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+                  view === value ? "bg-ink text-white" : "text-ink/70 hover:text-ink"
+                )}
+              >
+                <Icon className="size-4" />
+                {label}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => (showForm && !editing ? onCancelForm() : setShowForm(true))}
+            className={cn(buttonVariants(), "rounded-full bg-brand hover:bg-brand/90 text-white px-5")}
+          >
+            <Plus className="size-4 mr-1" />
+            New appointment
+          </button>
+        </div>
       </div>
 
       {showForm && (
         <form
-          onSubmit={handleSubmit(onCreate)}
+          onSubmit={handleSubmit(onSubmit)}
           className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 rounded-xl border border-black/10 bg-white p-6"
           noValidate
         >
+          {editing && (
+            <p className="lg:col-span-3 text-sm font-medium text-brand">Editing appointment for {editing.client_name}</p>
+          )}
           <Field label="Client name *" error={errors.client_name?.message}>
             <Input {...register("client_name")} />
           </Field>
@@ -151,22 +230,83 @@ export function AppointmentsManager({ appointments }: { appointments: Appointmen
               )}
             />
           </Field>
-          <Field label="Property ID (optional)">
-            <Input {...register("property_id")} placeholder="uuid" />
+          <Field label="Property (optional)">
+            <Controller
+              control={control}
+              name="property_id"
+              render={({ field }) => (
+                <Select value={field.value || "none"} onValueChange={(v) => field.onChange(v === "none" ? "" : v)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="No property" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No property</SelectItem>
+                    {listings.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>
+                        {p.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+          </Field>
+          <Field label="Lead (optional)">
+            <Controller
+              control={control}
+              name="lead_id"
+              render={({ field }) => (
+                <Select value={field.value || "none"} onValueChange={(v) => field.onChange(v === "none" ? "" : v)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="No linked lead" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No linked lead</SelectItem>
+                    {leads.map((l) => (
+                      <SelectItem key={l.id} value={l.id}>
+                        {l.full_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </Field>
           <Field label="Notes">
             <Textarea rows={1} {...register("notes")} />
           </Field>
-          <div className="flex items-end">
+          <div className="flex items-end gap-2">
             <button
               type="submit"
               disabled={isSubmitting}
               className={cn(buttonVariants(), "rounded-full bg-brand hover:bg-brand/90 text-white px-6")}
             >
-              {isSubmitting ? "Saving…" : "Schedule"}
+              {isSubmitting ? "Saving…" : editing ? "Save changes" : "Schedule"}
+            </button>
+            <button
+              type="button"
+              onClick={onCancelForm}
+              className={cn(buttonVariants({ variant: "outline" }), "rounded-full px-6")}
+            >
+              Cancel
             </button>
           </div>
         </form>
+      )}
+
+      {view === "calendar" && (
+        <div className="mt-6">
+          <AppointmentsCalendar appointments={appointments} onSelectDay={setSelectedDay} selectedDay={selectedDay} />
+          {selectedDay && (
+            <p className="mt-3 text-sm text-slate">
+              Showing {dayFiltered.length} appointment{dayFiltered.length === 1 ? "" : "s"} on{" "}
+              {new Date(`${selectedDay}T00:00:00`).toLocaleDateString(undefined, { month: "long", day: "numeric" })} —{" "}
+              <button onClick={() => setSelectedDay(null)} className="text-brand underline">
+                clear
+              </button>
+            </p>
+          )}
+        </div>
       )}
 
       <AppointmentSection
@@ -175,6 +315,7 @@ export function AppointmentsManager({ appointments }: { appointments: Appointmen
         isPending={isPending}
         onStatusChange={onStatusChange}
         onDelete={onDelete}
+        onEdit={onEdit}
       />
       <AppointmentSection
         title="Past"
@@ -182,6 +323,7 @@ export function AppointmentsManager({ appointments }: { appointments: Appointmen
         isPending={isPending}
         onStatusChange={onStatusChange}
         onDelete={onDelete}
+        onEdit={onEdit}
       />
     </div>
   );
@@ -193,12 +335,14 @@ function AppointmentSection({
   isPending,
   onStatusChange,
   onDelete,
+  onEdit,
 }: {
   title: string;
   appointments: Appointment[];
   isPending: boolean;
   onStatusChange: (id: string, value: string | null) => void;
   onDelete: (id: string, name: string) => void;
+  onEdit: (appt: Appointment) => void;
 }) {
   return (
     <div className="mt-8">
@@ -247,14 +391,24 @@ function AppointmentSection({
                     </Select>
                   </td>
                   <td className="p-4 text-right">
-                    <button
-                      type="button"
-                      onClick={() => onDelete(appt.id, appt.client_name)}
-                      aria-label="Delete appointment"
-                      className="text-slate hover:text-brand"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
+                    <div className="flex items-center justify-end gap-3">
+                      <button
+                        type="button"
+                        onClick={() => onEdit(appt)}
+                        aria-label="Edit appointment"
+                        className="text-slate hover:text-ink"
+                      >
+                        <Pencil className="size-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onDelete(appt.id, appt.client_name)}
+                        aria-label="Delete appointment"
+                        className="text-slate hover:text-brand"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
