@@ -17,7 +17,13 @@ type Step2Values = {
   phone: string;
 };
 
-export function HomeValueBand({ sourcePage = "/" }: { sourcePage?: string }) {
+export function HomeValueBand({
+  sourcePage = "/",
+  headingLevel: Heading = "h2",
+}: {
+  sourcePage?: string;
+  headingLevel?: "h1" | "h2";
+}) {
   const { lang } = useLanguage();
   const [address, setAddress] = useState("");
   const [step, setStep] = useState<1 | 2 | "done">(1);
@@ -59,7 +65,7 @@ export function HomeValueBand({ sourcePage = "/" }: { sourcePage?: string }) {
     <section className="bg-ink text-white">
       <div className="container-app py-20 md:py-28">
         <div className="max-w-2xl">
-          <h2 className="text-[clamp(2rem,3.5vw,3rem)] font-semibold">{t(dict.homeValue.h2, lang)}</h2>
+          <Heading className="text-[clamp(2rem,3.5vw,3rem)] font-semibold">{t(dict.homeValue.h2, lang)}</Heading>
           <p className="mt-4 text-white/70 text-[1.0625rem] leading-[1.7]">{t(dict.homeValue.sub, lang)}</p>
 
           <div className="mt-6 flex items-center gap-2">
@@ -84,8 +90,9 @@ export function HomeValueBand({ sourcePage = "/" }: { sourcePage?: string }) {
               <Input
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                aria-label={t(dict.homeValue.placeholder, lang)}
                 placeholder={t(dict.homeValue.placeholder, lang)}
-                className="h-12 bg-white text-ink border-0 flex-1"
+                className="h-12 bg-white text-ink border-0 sm:flex-1"
                 required
               />
               <button

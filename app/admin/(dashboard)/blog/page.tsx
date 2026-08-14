@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllBlogPostsAdmin } from "@/lib/data/admin";
 import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/admin/page-header";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { blogCategoryLabels } from "@/lib/blog-content";
@@ -18,14 +19,13 @@ export default async function AdminBlogPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl">Blog posts</h1>
+      <PageHeader title="Blog posts">
         <Link href="/admin/blog/new" className={cn(buttonVariants(), "rounded-full bg-brand hover:bg-brand/90 text-white px-5")}>
           New post
         </Link>
-      </div>
+      </PageHeader>
 
-      <div className="mt-6 overflow-x-auto rounded-xl border border-black/10 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-black/10 bg-white">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-black/10 text-left text-xs uppercase tracking-wide text-slate">

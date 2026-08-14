@@ -74,7 +74,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: #cd1935;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -109,7 +109,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: #e04a60;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -142,6 +142,39 @@
   }
 }
 
+
+/* The UA default focus ring is sub-pixel and all but invisible. Colour comes
+   from --ring (brand red), so every focus indicator on the site matches.
+   shadcn primitives carry their own focus ring, so they are left alone. */
+a:focus-visible,
+button:not([data-slot]):focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline-width: 2px !important;
+  outline-style: solid !important;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* The dark footer needs a light ring — brand red on near-black is too quiet. */
+footer a:focus-visible,
+footer button:not([data-slot]):focus-visible,
+.bg-ink a:focus-visible,
+.bg-ink button:not([data-slot]):focus-visible {
+  outline-color: #ffffff !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @layer utilities {
   .eyebrow {
     @apply text-xs uppercase tracking-[0.14em] text-slate font-medium;
@@ -152,4 +185,59 @@
   .container-app {
     @apply mx-auto w-full max-w-[1240px] px-6 md:px-12;
   }
+}
+
+/* Styling for blog posts written as pasted HTML rather than the markdown
+   shorthand. Mirrors what the markdown renderer produces. */
+.blog-html > * + * {
+  @apply mt-5;
+}
+.blog-html h1 {
+  @apply font-display text-3xl font-semibold tracking-[-0.02em];
+}
+.blog-html h2 {
+  @apply pt-2 font-display text-2xl font-semibold tracking-[-0.02em];
+}
+.blog-html h3 {
+  @apply pt-1 font-display text-xl font-semibold tracking-[-0.02em];
+}
+.blog-html p {
+  @apply text-ink/85 leading-relaxed;
+}
+.blog-html a {
+  @apply text-brand underline underline-offset-2 hover:no-underline;
+}
+.blog-html strong {
+  @apply font-semibold text-ink;
+}
+.blog-html ul {
+  @apply list-disc space-y-2 pl-6 marker:text-brand;
+}
+.blog-html ol {
+  @apply list-decimal space-y-2 pl-6 marker:font-semibold;
+}
+.blog-html li {
+  @apply text-ink/85 leading-relaxed;
+}
+.blog-html blockquote {
+  @apply border-l-4 border-brand bg-sand/60 px-5 py-4 text-ink/90 italic;
+}
+.blog-html hr {
+  @apply border-black/10;
+}
+.blog-html img {
+  @apply h-auto w-full rounded-xl;
+}
+.blog-html table {
+  @apply w-full border-collapse text-sm;
+}
+.blog-html th,
+.blog-html td {
+  @apply border border-black/10 px-3 py-2 text-left;
+}
+.blog-html header > * + * {
+  @apply mt-5;
+}
+.blog-html .blog-cta {
+  @apply rounded-xl border border-black/10 bg-sand px-6 py-6;
 }

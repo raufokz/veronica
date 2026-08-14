@@ -19,8 +19,33 @@ export function formatBlogDate(iso: string): string {
 }
 
 export function estimateReadTime(content: string): number {
-  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const text = isHtmlContent(content) ? content.replace(/<[^>]*>/g, " ") : content;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
+}
+
+// Posts can be written either as the lightweight markdown below or as a block of
+// HTML pasted straight in. A leading block-level tag is what tells them apart.
+const HTML_START = /^\s*<(article|section|div|h[1-6]|p|ul|ol|table|figure|header|blockquote|hr)\b/i;
+
+export function isHtmlContent(content: string): boolean {
+  return HTML_START.test(content);
+}
+
+/**
+ * Defence in depth for pasted HTML. Only signed-in admins can publish posts, so
+ * this is a guard against a bad paste rather than the primary control: it drops
+ * executable and embedding tags, inline event handlers, and javascript: URLs.
+ */
+export function sanitizeBlogHtml(html: string): string {
+  return html
+    .replace(/<\s*(script|style|iframe|object|embed|form|input|button)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, "")
+    .replace(/<\s*(script|style|iframe|object|embed|form|input|button)\b[^>]*\/?\s*>/gi, "")
+    .replace(/\son[a-z]+\s*=\s*"[^"]*"/gi, "")
+    .replace(/\son[a-z]+\s*=\s*'[^']*'/gi, "")
+    .replace(/\son[a-z]+\s*=\s*[^\s>]+/gi, "")
+    .replace(/(href|src)\s*=\s*"\s*javascript:[^"]*"/gi, '$1="#"')
+    .replace(/(href|src)\s*=\s*'\s*javascript:[^']*'/gi, "$1='#'");
 }
 
 // Lightweight markdown renderer for post content. Supports paragraphs,

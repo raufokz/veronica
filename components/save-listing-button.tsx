@@ -25,7 +25,7 @@ export function SaveListingButton({
       aria-label={saved ? "Remove from saved properties" : "Save property"}
       aria-pressed={saved}
       className={cn(
-        "flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm size-8 shadow-sm transition-colors hover:bg-white",
+        "flex size-11 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur-sm transition-colors hover:bg-white lg:size-9",
         className
       )}
     >

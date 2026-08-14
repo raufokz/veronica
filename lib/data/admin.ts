@@ -73,3 +73,32 @@ export async function getBlogPostByIdAdmin(id: string): Promise<BlogPost | null>
   }
   return data;
 }
+
+export type AdminNavCounts = {
+  newLeads: number;
+  upcomingAppointments: number;
+};
+
+export async function getAdminNavCounts(): Promise<AdminNavCounts> {
+  const supabase = await createClient();
+  const today = new Date().toISOString().slice(0, 10);
+
+  const [leads, appointments] = await Promise.all([
+    supabase.from("leads").select("id", { count: "exact", head: true }).eq("status", "new"),
+    supabase
+      .from("appointments")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "scheduled")
+      .gte("appointment_date", today),
+  ]);
+
+  if (leads.error) console.error("[admin] getAdminNavCounts leads failed", leads.error.message);
+  if (appointments.error) {
+    console.error("[admin] getAdminNavCounts appointments failed", appointments.error.message);
+  }
+
+  return {
+    newLeads: leads.count ?? 0,
+    upcomingAppointments: appointments.count ?? 0,
+  };
+}

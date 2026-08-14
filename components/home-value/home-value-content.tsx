@@ -61,7 +61,7 @@ export function HomeValueContent() {
 
   return (
     <>
-      <HomeValueBand sourcePage="/home-value" />
+      <HomeValueBand sourcePage="/home-value" headingLevel="h1" />
 
       <section className="section-pad bg-white">
         <div className="container-app">

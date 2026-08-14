@@ -77,7 +77,7 @@ export function Nav() {
           <button
             onClick={toggle}
             aria-label="Toggle language / Cambiar idioma"
-            className="rounded-full border border-black/10 px-3 py-1.5 text-xs font-semibold tracking-wide"
+            className="flex h-11 items-center rounded-full border border-black/10 px-4 text-xs font-semibold tracking-wide transition-colors hover:bg-sand lg:h-9 lg:px-3"
           >
             <span className={lang === "en" ? "text-ink" : "text-slate"}>EN</span>
             <span className="text-slate mx-1">|</span>
@@ -90,7 +90,7 @@ export function Nav() {
             rel="noopener noreferrer"
             className={cn(
               buttonVariants(),
-              "hidden sm:inline-flex rounded-full bg-brand hover:bg-brand/90 text-white px-5 h-9"
+              "hidden sm:inline-flex rounded-full bg-brand hover:bg-brand/90 text-white px-5 h-11 lg:h-9"
             )}
           >
             {t(dict.nav.bookACall, lang)}

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTestimonialByIdAdmin } from "@/lib/data/admin";
 import { TestimonialForm } from "@/components/admin/testimonial-form";
+import { PageHeader } from "@/components/admin/page-header";
 
 export default async function EditTestimonialPage({
   params,
@@ -13,10 +14,8 @@ export default async function EditTestimonialPage({
 
   return (
     <div>
-      <h1 className="font-display text-2xl">Edit testimonial</h1>
-      <div className="mt-6">
-        <TestimonialForm testimonial={testimonial} />
-      </div>
+      <PageHeader title="Edit testimonial" />
+      <TestimonialForm testimonial={testimonial} />
     </div>
   );
 }

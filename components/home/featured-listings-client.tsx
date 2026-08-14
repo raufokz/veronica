@@ -46,7 +46,7 @@ export function FeaturedListingsClient({ properties }: { properties: Property[] 
                 type="button"
                 onClick={() => setTab(tabItem.value)}
                 className={cn(
-                  "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  "inline-flex min-h-11 shrink-0 items-center rounded-full px-4 text-sm font-medium transition-colors lg:min-h-9",
                   active
                     ? "bg-ink text-white"
                     : "border border-black/10 text-ink/70 hover:border-ink"

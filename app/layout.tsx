@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/lib/language-context";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { MobileDock } from "@/components/mobile-dock";
+import { SiteChrome } from "@/components/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { siteConfig } from "@/lib/site-config";
@@ -77,12 +78,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             Skip to main content
           </a>
           <BreadcrumbJsonLd />
-          <Nav />
+          <SiteChrome>
+            <Nav />
+          </SiteChrome>
           <main id="main-content" className="flex-1 flex flex-col">
             {children}
           </main>
-          <Footer />
-          <MobileDock />
+          <SiteChrome>
+            <Footer />
+            <MobileDock />
+          </SiteChrome>
           <Toaster />
         </LanguageProvider>
       </body>

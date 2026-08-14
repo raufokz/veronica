@@ -1,23 +1,12 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { SignOutButton } from "@/components/admin/sign-out-button";
+import { getAdminNavCounts } from "@/lib/data/admin";
+import { AdminSidebar, AdminMobileNav } from "@/components/admin/admin-nav";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
-
-const links = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/listings", label: "Listings" },
-  { href: "/admin/blog", label: "Blog" },
-  { href: "/admin/testimonials", label: "Testimonials" },
-  { href: "/admin/appointments", label: "Appointments" },
-  { href: "/admin/media", label: "Media" },
-  { href: "/admin/settings", label: "Settings" },
-];
 
 export default async function AdminDashboardLayout({
   children,
@@ -33,25 +22,16 @@ export default async function AdminDashboardLayout({
     redirect("/admin/login");
   }
 
+  const counts = await getAdminNavCounts();
+  const email = user.email ?? "";
+
   return (
     <div className="min-h-screen bg-sand">
-      <header className="border-b border-black/10 bg-white">
-        <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
-          <Link href="/admin" className="font-display text-lg">
-            Veronica Medellin <span className="text-slate text-sm font-sans">admin</span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            {links.map((link) => (
-              <Link key={link.href} href={link.href} className="text-sm font-medium text-ink/80 hover:text-ink">
-                {link.label}
-              </Link>
-            ))}
-            <span className="text-sm text-slate">{user.email}</span>
-            <SignOutButton />
-          </nav>
-        </div>
-      </header>
-      <main className="mx-auto max-w-6xl px-6 py-10">{children}</main>
+      <AdminSidebar email={email} counts={counts} />
+      <AdminMobileNav email={email} counts={counts} />
+      <main className="px-4 py-8 sm:px-6 lg:pl-64">
+        <div className="mx-auto max-w-6xl lg:px-6">{children}</div>
+      </main>
     </div>
   );
 }

@@ -15,7 +15,13 @@ const bookCopy = {
   cta: { en: "Book a call directly", es: "Agenda una llamada directamente" },
 };
 
-export function ContactSection() {
+export function ContactSection({
+  headingLevel: Heading = "h2",
+  sourcePage = "/",
+}: {
+  headingLevel?: "h1" | "h2";
+  sourcePage?: string;
+} = {}) {
   const { lang } = useLanguage();
 
   return (
@@ -23,8 +29,8 @@ export function ContactSection() {
       <div className="container-app grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div>
           <p className="eyebrow">{t(dict.contact.eyebrow, lang)}</p>
-          <h2 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold">{t(dict.contact.h2, lang)}</h2>
-          <ContactForm sourcePage="/" className="mt-8" />
+          <Heading className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold">{t(dict.contact.h2, lang)}</Heading>
+          <ContactForm sourcePage={sourcePage} className="mt-8" />
         </div>
 
         <div className="space-y-8">
@@ -52,30 +58,30 @@ export function ContactSection() {
             </a>
           </div>
 
-          <div className="space-y-3 text-sm">
+          <div className="space-y-1 text-sm lg:space-y-3">
             <p>
-              <a href={`tel:${siteConfig.phone}`} className="font-medium hover:text-brand">
+              <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-10 items-center font-medium hover:text-brand lg:min-h-0">
                 {siteConfig.phoneDisplay}
               </a>
             </p>
             <p>
-              <a href={`mailto:${siteConfig.email}`} className="font-medium hover:text-brand">
+              <a href={`mailto:${siteConfig.email}`} className="inline-flex min-h-10 items-center font-medium hover:text-brand lg:min-h-0">
                 {siteConfig.email}
               </a>
             </p>
             <p className="text-slate">{siteConfig.brokerage}</p>
             <p className="text-slate">TREC License #{siteConfig.trecLicense}</p>
-            <div className="flex gap-3 pt-2">
-              <a href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-slate hover:text-brand">
+            <div className="flex gap-1 pt-2 lg:gap-2">
+              <a href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
                 <FacebookIcon className="size-5" />
               </a>
-              <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-slate hover:text-brand">
+              <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
                 <InstagramIcon className="size-5" />
               </a>
-              <a href={siteConfig.social.pinterest} target="_blank" rel="noopener noreferrer" aria-label="Pinterest" className="text-slate hover:text-brand">
+              <a href={siteConfig.social.pinterest} target="_blank" rel="noopener noreferrer" aria-label="Pinterest" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
                 <PinterestIcon className="size-5" />
               </a>
-              <a href={siteConfig.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-slate hover:text-brand">
+              <a href={siteConfig.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
                 <YouTubeIcon className="size-5" />
               </a>
             </div>

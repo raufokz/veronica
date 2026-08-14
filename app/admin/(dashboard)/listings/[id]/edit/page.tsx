@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getListingByIdAdmin } from "@/lib/data/admin";
 import { ListingForm } from "@/components/admin/listing-form";
+import { PageHeader } from "@/components/admin/page-header";
 
 export default async function EditListingPage({
   params,
@@ -13,10 +14,8 @@ export default async function EditListingPage({
 
   return (
     <div>
-      <h1 className="font-display text-2xl">Edit listing</h1>
-      <div className="mt-6">
-        <ListingForm property={property} />
-      </div>
+      <PageHeader title="Edit listing" />
+      <ListingForm property={property} />
     </div>
   );
 }

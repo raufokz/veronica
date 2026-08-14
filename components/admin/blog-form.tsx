@@ -168,7 +168,7 @@ export function BlogForm({ post }: { post?: BlogPost | null }) {
       <Field
         label="Content *"
         error={errors.content?.message}
-        hint="Use the toolbar, or write ## headings, > blockquotes, and - / 1. lists by hand. Leave a blank line between blocks."
+        hint="Use the toolbar, or write ## headings, > blockquotes, and - / 1. lists by hand — leave a blank line between blocks. Pasting a block of HTML also works and is rendered as-is."
       >
         <Controller
           control={control}

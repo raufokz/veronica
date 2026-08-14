@@ -8,6 +8,9 @@ import {
   PropertyStatusChart,
   MonthlyLeadsChart,
 } from "@/components/admin/dashboard-charts";
+import { PageHeader } from "@/components/admin/page-header";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -68,9 +71,16 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl">Overview</h1>
+      <PageHeader title="Overview">
+        <Link
+          href="/admin/listings/new"
+          className={cn(buttonVariants(), "rounded-full bg-brand hover:bg-brand/90 text-white px-5")}
+        >
+          New listing
+        </Link>
+      </PageHeader>
 
-      <div className="mt-6 grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {cards.map((card) => (
           <Link
             key={card.label}

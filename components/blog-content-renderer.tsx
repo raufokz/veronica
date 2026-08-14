@@ -1,6 +1,15 @@
-import { renderBlogContent } from "@/lib/blog-content";
+import { isHtmlContent, renderBlogContent, sanitizeBlogHtml } from "@/lib/blog-content";
 
 export function BlogContent({ content }: { content: string }) {
+  if (isHtmlContent(content)) {
+    return (
+      <div
+        className="blog-html"
+        dangerouslySetInnerHTML={{ __html: sanitizeBlogHtml(content) }}
+      />
+    );
+  }
+
   const blocks = renderBlogContent(content);
 
   return (
