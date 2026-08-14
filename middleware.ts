@@ -6,5 +6,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // @supabase/ssr pulls in Node APIs, so the Edge runtime can't bundle it.
+  runtime: "nodejs",
   matcher: ["/admin/:path*"],
 };
