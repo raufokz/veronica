@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "db:link": "npx --yes supabase@latest link --project-ref altbyubhdvnetvnsmtkm",
     "db:new": "npx --yes supabase@latest migration new",
     "db:status": "npx --yes supabase@latest migration list",
