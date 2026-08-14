@@ -7,6 +7,7 @@ export type BlogFilters = {
   category?: BlogCategory;
   search?: string;
   limit?: number;
+  offset?: number;
 };
 
 export async function getPublishedBlogPosts(filters: BlogFilters = {}): Promise<BlogPost[]> {
@@ -21,7 +22,11 @@ export async function getPublishedBlogPosts(filters: BlogFilters = {}): Promise<
 
   if (filters.category) query = query.eq("category", filters.category);
   if (filters.search) query = query.ilike("title", `%${filters.search}%`);
-  if (filters.limit) query = query.limit(filters.limit);
+  if (filters.limit && filters.offset) {
+    query = query.range(filters.offset, filters.offset + filters.limit - 1);
+  } else if (filters.limit) {
+    query = query.limit(filters.limit);
+  }
 
   const { data, error } = await query.order("published_at", { ascending: false });
   if (error) {
@@ -29,6 +34,29 @@ export async function getPublishedBlogPosts(filters: BlogFilters = {}): Promise<
     return [];
   }
   return data ?? [];
+}
+
+export async function getPublishedBlogPostsCount(
+  filters: Pick<BlogFilters, "category" | "search"> = {}
+): Promise<number> {
+  if (!isSupabaseConfigured()) return 0;
+  const supabase = await createClient();
+
+  let query = supabase
+    .from("blog_posts")
+    .select("*", { count: "exact", head: true })
+    .in("status", ["published", "scheduled"])
+    .lte("published_at", new Date().toISOString());
+
+  if (filters.category) query = query.eq("category", filters.category);
+  if (filters.search) query = query.ilike("title", `%${filters.search}%`);
+
+  const { count, error } = await query;
+  if (error) {
+    console.error("[data] getPublishedBlogPostsCount failed", error.message);
+    return 0;
+  }
+  return count ?? 0;
 }
 
 export async function getRecentBlogPosts(limit = 3): Promise<BlogPost[]> {

@@ -5,6 +5,7 @@ import type { Property } from "@/types/supabase";
 import { cn } from "@/lib/utils";
 import type { Lang } from "@/lib/dict";
 import { t, dict } from "@/lib/dict";
+import { SaveListingButton } from "@/components/save-listing-button";
 
 const statusStyles: Record<string, string> = {
   active: "bg-brand text-white",
@@ -47,6 +48,7 @@ export function ListingCard({ property, lang = "en" }: { property: Property; lan
         <Badge className={cn("absolute top-3 left-3 border-0", statusStyles[property.status])}>
           {t(statusLabel[property.status], lang)}
         </Badge>
+        <SaveListingButton propertyId={property.id} className="absolute top-3 right-3" />
       </div>
       <div className="p-5">
         <p className="font-sans font-semibold tabular-nums text-lg">{currency.format(property.price)}</p>
@@ -66,6 +68,18 @@ export function ListingCard({ property, lang = "en" }: { property: Property; lan
             </>
           )}
         </div>
+        {property.amenities && property.amenities.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {property.amenities.slice(0, 3).map((amenity) => (
+              <span
+                key={amenity}
+                className="rounded-full bg-sand px-2.5 py-1 text-xs font-medium text-ink/70"
+              >
+                {amenity}
+              </span>
+            ))}
+          </div>
+        )}
         <span className="mt-3 inline-block text-sm font-medium text-brand group-hover:underline">
           {t(dict.listings.seeFull, lang)}
         </span>

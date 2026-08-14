@@ -1,31 +1,56 @@
 "use client";
 
+import {
+  MapPin,
+  Handshake,
+  UserCheck,
+  Megaphone,
+  LineChart,
+  GraduationCap,
+  Landmark,
+  MessageCircle,
+  Languages,
+  Target,
+} from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
+const eyebrow = { en: "WHY WORK WITH VERONICA", es: "POR QUÉ TRABAJAR CON VERONICA" };
+const heading = { en: "Ten reasons clients choose her", es: "Diez razones por las que los clientes la eligen" };
+
 const items = [
-  { en: "Local market knowledge", es: "Conocimiento del mercado local" },
-  { en: "Sharp negotiation", es: "Negociación aguda" },
-  { en: "Personalised service", es: "Servicio personalizado" },
-  { en: "Modern marketing", es: "Marketing moderno" },
-  { en: "Investment insight", es: "Visión de inversión" },
-  { en: "Continuing education", es: "Educación continua" },
-  { en: "Community roots", es: "Raíces en la comunidad" },
-  { en: "Clear communication", es: "Comunicación clara" },
-  { en: "Bilingual service", es: "Servicio bilingüe" },
-  { en: "Client-first focus", es: "Enfoque en el cliente" },
+  { icon: MapPin, en: "Local market knowledge", es: "Conocimiento del mercado local" },
+  { icon: Handshake, en: "Sharp negotiation", es: "Negociación aguda" },
+  { icon: UserCheck, en: "Personalised service", es: "Servicio personalizado" },
+  { icon: Megaphone, en: "Modern marketing", es: "Marketing moderno" },
+  { icon: LineChart, en: "Investment insight", es: "Visión de inversión" },
+  { icon: GraduationCap, en: "Continuing education", es: "Educación continua" },
+  { icon: Landmark, en: "Community roots", es: "Raíces en la comunidad" },
+  { icon: MessageCircle, en: "Clear communication", es: "Comunicación clara" },
+  { icon: Languages, en: "Bilingual service", es: "Servicio bilingüe" },
+  { icon: Target, en: "Client-first focus", es: "Enfoque en el cliente" },
 ];
 
 export function WhyVeronica() {
   const { lang } = useLanguage();
 
   return (
-    <section className="bg-white py-16">
+    <section className="section-pad bg-white">
       <div className="container-app">
-        <div className="flex flex-wrap justify-center gap-x-10 gap-y-4">
+        <p className="eyebrow">{lang === "es" ? eyebrow.es : eyebrow.en}</p>
+        <h2 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold max-w-xl">
+          {lang === "es" ? heading.es : heading.en}
+        </h2>
+
+        <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
           {items.map((item) => (
-            <span key={item.en} className="text-sm font-medium text-slate">
-              {lang === "es" ? item.es : item.en}
-            </span>
+            <div key={item.en} className="flex flex-col items-start gap-3">
+              <span className="flex size-10 items-center justify-center rounded-lg bg-brand text-white">
+                <item.icon className="size-5" />
+              </span>
+              <span className="text-sm font-medium text-ink leading-snug">
+                {lang === "es" ? item.es : item.en}
+              </span>
+            </div>
           ))}
         </div>
       </div>

@@ -23,6 +23,7 @@ const links = [
   { href: "/about", key: "about" as const },
   { href: "/services", key: "services" as const },
   { href: "/neighborhoods", key: "neighborhoods" as const },
+  { href: "/#testimonials", key: "testimonials" as const },
   { href: "/blog", key: "blog" as const },
   { href: "/contact", key: "contact" as const },
 ];

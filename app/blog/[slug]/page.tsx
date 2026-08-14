@@ -7,6 +7,7 @@ import { BlogContent } from "@/components/blog-content-renderer";
 import { BlogCard } from "@/components/blog-card";
 import { BlogViewTracker } from "@/components/blog-view-tracker";
 import { BlogShareButtons } from "@/components/blog-share-buttons";
+import { NewsletterCta } from "@/components/newsletter-cta";
 import { blogCategoryLabels, estimateReadTime, formatBlogDate } from "@/lib/blog-content";
 import { siteConfig } from "@/lib/site-config";
 
@@ -135,6 +136,10 @@ export default async function BlogDetailPage({
         <div className="mt-8 flex items-center gap-3 border-t border-black/10 pt-6">
           <span className="text-sm font-medium">Share:</span>
           <BlogShareButtons title={post.title} slug={post.slug} />
+        </div>
+
+        <div className="mt-10">
+          <NewsletterCta sourcePage={`blog:${post.slug}`} />
         </div>
       </div>
 

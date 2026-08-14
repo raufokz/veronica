@@ -7,6 +7,7 @@ export const dict = {
     about: { en: "About", es: "Acerca de" },
     services: { en: "Services", es: "Servicios" },
     neighborhoods: { en: "Neighborhoods", es: "Vecindarios" },
+    testimonials: { en: "Testimonials", es: "Testimonios" },
     blog: { en: "Blog", es: "Blog" },
     contact: { en: "Contact", es: "Contacto" },
     bookACall: { en: "Book a call", es: "Agenda una llamada" },
@@ -59,6 +60,12 @@ export const dict = {
     selling: { title: { en: "Selling a home", es: "Vender una casa" }, copy: { en: "Pricing backed by real comps, photography that makes people stop scrolling, and negotiation that protects your number.", es: "Precios respaldados por comparables reales, fotografía que detiene el scroll, y negociación que protege tu número." } },
     investing: { title: { en: "Investing", es: "Invertir" }, copy: { en: "Rental math, neighbourhood trajectory, and honest answers about which properties aren't worth your capital.", es: "Números de renta, la trayectoria del vecindario, y respuestas honestas sobre qué propiedades no valen tu capital." } },
     guidance: { title: { en: "One-on-one guidance", es: "Asesoría personalizada" }, copy: { en: "A strategy built around your timeline and your budget — not a template.", es: "Una estrategia construida en torno a tu tiempo y tu presupuesto — no una plantilla." } },
+    process: {
+      step1: { title: { en: "Consultation", es: "Consulta" }, copy: { en: "A free call to map your goals, budget, and timeline.", es: "Una llamada gratuita para definir metas, presupuesto y tiempos." } },
+      step2: { title: { en: "Search or list", es: "Buscar o listar" }, copy: { en: "Curated showings, or pricing and marketing your home to sell.", es: "Recorridos seleccionados, o precio y marketing para vender tu casa." } },
+      step3: { title: { en: "Negotiate", es: "Negociar" }, copy: { en: "Offers, inspections, and terms handled in your best interest.", es: "Ofertas, inspecciones y términos manejados en tu mejor interés." } },
+      step4: { title: { en: "Close", es: "Cerrar" }, copy: { en: "Paperwork explained plainly, keys in your hand.", es: "Papeleo explicado con claridad, llaves en tu mano." } },
+    },
   },
   testimonials: {
     eyebrow: { en: "CLIENT STORIES", es: "HISTORIAS DE CLIENTES" },

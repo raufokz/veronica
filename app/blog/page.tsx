@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import { getPublishedBlogPosts } from "@/lib/data/blog";
+import { getPublishedBlogPosts, getPublishedBlogPostsCount } from "@/lib/data/blog";
 import { BlogCard } from "@/components/blog-card";
+import { BlogSearchForm } from "@/components/blog-search-form";
 import { blogCategoryLabels, blogCategorySlugs } from "@/lib/blog-content";
 import type { BlogCategory } from "@/types/supabase";
 
@@ -15,19 +16,41 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
+const POSTS_PER_PAGE = 9;
+
 const fallbackCategories = blogCategorySlugs.map((slug) => ({ slug, label: blogCategoryLabels[slug] }));
+
+function buildHref(params: { category?: string; q?: string; page?: number }) {
+  const search = new URLSearchParams();
+  if (params.category) search.set("category", params.category);
+  if (params.q) search.set("q", params.q);
+  if (params.page && params.page > 1) search.set("page", String(params.page));
+  const qs = search.toString();
+  return qs ? `/blog?${qs}` : "/blog";
+}
 
 export default async function BlogIndexPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; q?: string }>;
+  searchParams: Promise<{ category?: string; q?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const activeCategory = (params.category as BlogCategory) || undefined;
-  const posts = await getPublishedBlogPosts({
-    category: activeCategory,
-    search: params.q,
-  });
+  const search = params.q?.trim() || undefined;
+  const page = Math.max(1, Number(params.page) || 1);
+  const offset = (page - 1) * POSTS_PER_PAGE;
+
+  const [posts, total] = await Promise.all([
+    getPublishedBlogPosts({
+      category: activeCategory,
+      search,
+      limit: POSTS_PER_PAGE,
+      offset,
+    }),
+    getPublishedBlogPostsCount({ category: activeCategory, search }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
 
   return (
     <div className="container-app section-pad">
@@ -36,30 +59,34 @@ export default async function BlogIndexPage({
         Tips, trends, and what&apos;s actually happening in Houston real estate
       </h1>
 
-      <div className="mt-8 flex flex-wrap items-center gap-2">
-        <Link
-          href="/blog"
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-            !activeCategory
-              ? "bg-ink text-white"
-              : "border border-black/10 text-ink/70 hover:border-ink"
-          }`}
-        >
-          All
-        </Link>
-        {fallbackCategories.map(({ slug, label }) => (
+      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap items-center gap-2">
           <Link
-            key={slug}
-            href={activeCategory === slug ? "/blog" : `/blog?category=${slug}`}
+            href={buildHref({ q: search })}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-              activeCategory === slug
+              !activeCategory
                 ? "bg-ink text-white"
                 : "border border-black/10 text-ink/70 hover:border-ink"
             }`}
           >
-            {label}
+            All
           </Link>
-        ))}
+          {fallbackCategories.map(({ slug, label }) => (
+            <Link
+              key={slug}
+              href={activeCategory === slug ? buildHref({ q: search }) : buildHref({ category: slug, q: search })}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                activeCategory === slug
+                  ? "bg-ink text-white"
+                  : "border border-black/10 text-ink/70 hover:border-ink"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        <BlogSearchForm defaultValue={search ?? ""} category={activeCategory} />
       </div>
 
       <Suspense fallback={<div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" />}>
@@ -72,12 +99,41 @@ export default async function BlogIndexPage({
 
       {posts.length === 0 && (
         <p className="mt-10 text-slate">
-          No posts yet — check back soon, or{" "}
+          {search || activeCategory ? (
+            <>
+              No posts match that search —{" "}
+              <Link href="/blog" className="text-brand underline underline-offset-2">
+                clear filters
+              </Link>{" "}
+              or{" "}
+            </>
+          ) : (
+            "No posts yet — check back soon, or "
+          )}
           <Link href="/contact" className="text-brand underline underline-offset-2">
             ask Veronica a question
           </Link>{" "}
           directly.
         </p>
+      )}
+
+      {totalPages > 1 && (
+        <nav className="mt-12 flex items-center justify-center gap-2" aria-label="Blog pagination">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <Link
+              key={p}
+              href={buildHref({ category: activeCategory, q: search, page: p })}
+              aria-current={p === page ? "page" : undefined}
+              className={`flex size-9 items-center justify-center rounded-full text-sm font-medium tabular-nums transition-colors ${
+                p === page
+                  ? "bg-ink text-white"
+                  : "border border-black/10 text-ink/70 hover:border-ink"
+              }`}
+            >
+              {p}
+            </Link>
+          ))}
+        </nav>
       )}
     </div>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FacebookIcon, InstagramIcon, YouTubeIcon } from "@/components/social-icons";
+import { BrokerageLogo } from "@/components/brokerage-logo";
 import { useLanguage } from "@/lib/language-context";
 import { dict, t } from "@/lib/dict";
 import { siteConfig } from "@/lib/site-config";
@@ -54,7 +55,9 @@ export function Footer() {
           <ul className="mt-3 space-y-2 text-sm text-white/70">
             <li><a href={`tel:${siteConfig.phone}`} className="hover:text-white">{siteConfig.phoneDisplay}</a></li>
             <li><a href={`mailto:${siteConfig.email}`} className="hover:text-white">{siteConfig.email}</a></li>
-            <li>{siteConfig.brokerage}</li>
+            <li>
+              <BrokerageLogo name={siteConfig.brokerage} className="brightness-0 invert opacity-80" />
+            </li>
           </ul>
         </div>
       </div>
