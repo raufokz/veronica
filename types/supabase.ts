@@ -50,6 +50,9 @@ type PropertiesRow = {
   mls_number: string | null;
   featured: boolean;
   published: boolean;
+  meta_title: string | null;
+  meta_description: string | null;
+  og_image: string | null;
 };
 
 type LeadsRow = {
@@ -136,6 +139,7 @@ type TestimonialsRow = {
   transaction_type: string | null;
   is_featured: boolean;
   is_published: boolean;
+  display_order: number;
 };
 
 type NeighborhoodsRow = {
@@ -165,7 +169,9 @@ type BlogPostsRow = {
   status: BlogStatus;
   published_at: string | null;
   author: string | null;
+  meta_title: string | null;
   meta_description: string | null;
+  og_image: string | null;
   view_count: number;
 };
 

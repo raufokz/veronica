@@ -3,9 +3,24 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { logActivity } from "@/lib/activity";
-import type { LeadNote, LeadStatus } from "@/types/supabase";
+import type { ActivityLog, LeadNote, LeadStatus } from "@/types/supabase";
 
 export type CrmActionResult = { success: true } | { success: false; error: string };
+
+export async function getLeadActivityAction(leadId: string): Promise<ActivityLog[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("activity_logs")
+    .select("*")
+    .eq("entity_type", "lead")
+    .eq("entity_id", leadId)
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("[leads] getLeadActivityAction failed", error.message);
+    return [];
+  }
+  return data ?? [];
+}
 
 export async function getLeadNotesAction(leadId: string): Promise<LeadNote[]> {
   const supabase = await createClient();

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllLeads, getAllListingsAdmin, getAllTestimonialsAdmin } from "@/lib/data/admin";
+import { getAllLeads, getAllListingsAdmin, getAllTestimonialsAdmin, getAllBlogPostsAdmin } from "@/lib/data/admin";
 import { getRecentActivityLogs, getUpcomingAppointments } from "@/lib/data/crm";
 import { formatLeadStatus } from "@/lib/lead-status";
 import type { LeadStatus } from "@/types/supabase";
@@ -23,10 +23,11 @@ const pipelineLabels: Record<LeadStatus, string> = {
 };
 
 export default async function AdminOverviewPage() {
-  const [leads, listings, testimonials, activity, appointments] = await Promise.all([
+  const [leads, listings, testimonials, blogPosts, activity, appointments] = await Promise.all([
     getAllLeads(),
     getAllListingsAdmin(),
     getAllTestimonialsAdmin(),
+    getAllBlogPostsAdmin(),
     getRecentActivityLogs(10),
     getUpcomingAppointments(5),
   ]);
@@ -62,13 +63,14 @@ export default async function AdminOverviewPage() {
     { label: "New leads this month", value: newThisMonth, href: "/admin/leads" },
     { label: "Total leads", value: leads.length, href: "/admin/leads" },
     { label: "Testimonials", value: testimonials.length, href: "/admin/testimonials" },
+    { label: "Blog posts", value: blogPosts.length, href: "/admin/blog" },
   ];
 
   return (
     <div>
       <h1 className="font-display text-2xl">Overview</h1>
 
-      <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="mt-6 grid grid-cols-2 lg:grid-cols-5 gap-4">
         {cards.map((card) => (
           <Link
             key={card.label}

@@ -13,7 +13,8 @@ export async function createTestimonial(input: TestimonialFormInput): Promise<Ad
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.from("testimonials").insert(parsed.data);
+  const { count } = await supabase.from("testimonials").select("*", { count: "exact", head: true });
+  const { error } = await supabase.from("testimonials").insert({ ...parsed.data, display_order: count ?? 0 });
 
   if (error) {
     return { success: false, error: error.message };
@@ -21,6 +22,21 @@ export async function createTestimonial(input: TestimonialFormInput): Promise<Ad
   revalidatePath("/admin/testimonials");
   revalidatePath("/");
   redirect("/admin/testimonials");
+}
+
+export async function reorderTestimonials(orderedIds: string[]): Promise<AdminActionResult> {
+  const supabase = await createClient();
+  const updates = orderedIds.map((id, index) =>
+    supabase.from("testimonials").update({ display_order: index }).eq("id", id)
+  );
+  const results = await Promise.all(updates);
+  const failed = results.find((r) => r.error);
+  if (failed?.error) {
+    return { success: false, error: failed.error.message };
+  }
+  revalidatePath("/admin/testimonials");
+  revalidatePath("/");
+  return { success: true };
 }
 
 export async function updateTestimonial(

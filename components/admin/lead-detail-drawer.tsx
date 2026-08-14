@@ -17,12 +17,13 @@ import {
 } from "@/components/ui/select";
 import {
   addLeadNote,
+  getLeadActivityAction,
   getLeadNotesAction,
   updateLeadContact,
   updateLeadStatus,
 } from "@/app/actions/admin-leads";
-import type { Lead, LeadNote, LeadStatus } from "@/types/supabase";
-import { leadStatusLabels, leadStatusColor } from "@/lib/lead-status";
+import type { ActivityLog, Lead, LeadNote, LeadStatus } from "@/types/supabase";
+import { leadStatusLabels, leadStatusColor, formatLeadStatus } from "@/lib/lead-status";
 import { cn } from "@/lib/utils";
 
 export function LeadDetailDrawer({
@@ -41,6 +42,8 @@ export function LeadDetailDrawer({
   const [noteText, setNoteText] = useState("");
   const [addingNote, startNoteTransition] = useTransition();
   const [savingStatus, startStatusTransition] = useTransition();
+  const [activity, setActivity] = useState<ActivityLog[]>([]);
+  const [loadingActivity, setLoadingActivity] = useState(false);
 
   const status = lead?.status ?? "new";
 
@@ -51,6 +54,11 @@ export function LeadDetailDrawer({
       getLeadNotesAction(lead.id)
         .then(setNotes)
         .finally(() => setLoadingNotes(false));
+
+      setLoadingActivity(true);
+      getLeadActivityAction(lead.id)
+        .then(setActivity)
+        .finally(() => setLoadingActivity(false));
     }
   }, [open, lead]);
 
@@ -61,7 +69,10 @@ export function LeadDetailDrawer({
     startStatusTransition(() => {
       updateLeadStatus(lead.id, next as LeadStatus).then((res) => {
         if (!res.success) toast.error(res.error);
-        else onStatusChanged?.(lead.id, next as LeadStatus);
+        else {
+          onStatusChanged?.(lead.id, next as LeadStatus);
+          getLeadActivityAction(lead.id).then(setActivity);
+        }
       });
     });
   }
@@ -77,6 +88,7 @@ export function LeadDetailDrawer({
               toast.success("Note added.");
               setNoteText("");
               getLeadNotesAction(lead.id).then(setNotes);
+              getLeadActivityAction(lead.id).then(setActivity);
             }
           });
     });
@@ -196,6 +208,29 @@ export function LeadDetailDrawer({
                 <p className="mt-1.5 text-xs text-slate">
                   {new Date(note.created_at).toLocaleString()}
                 </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-black/10 pt-5">
+          <p className="text-sm font-semibold">Activity</p>
+          <div className="mt-4 space-y-3">
+            {loadingActivity && <p className="text-sm text-slate">Loading…</p>}
+            {!loadingActivity && activity.length === 0 && (
+              <p className="text-sm text-slate">No activity yet.</p>
+            )}
+            {activity.map((log) => (
+              <div key={log.id} className="flex items-start justify-between gap-4 text-sm">
+                <div>
+                  <span className="font-medium capitalize">{log.action.replace("_", " ")}</span>
+                  {log.details && typeof log.details === "object" && "to" in log.details && (
+                    <span className="text-slate"> → {formatLeadStatus((log.details as { to: LeadStatus }).to)}</span>
+                  )}
+                </div>
+                <time className="shrink-0 text-xs text-slate">
+                  {new Date(log.created_at).toLocaleString()}
+                </time>
               </div>
             ))}
           </div>

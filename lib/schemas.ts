@@ -43,6 +43,9 @@ export const propertySchema = z.object({
   mls_number: z.string().optional(),
   featured: z.boolean().default(false),
   published: z.boolean().default(true),
+  meta_title: z.string().max(70).optional(),
+  meta_description: z.string().max(200).optional(),
+  og_image: z.string().optional(),
 });
 
 export type PropertyFormInput = z.input<typeof propertySchema>;
@@ -73,7 +76,9 @@ export const blogPostSchema = z.object({
   status: z.enum(["draft", "published", "scheduled", "archived"]).default("draft"),
   published_at: z.string().optional(), // ISO date, "" means now for published
   author: z.string().optional(),
+  meta_title: z.string().max(70).optional(),
   meta_description: z.string().max(200).optional(),
+  og_image: z.string().optional(),
 });
 
 export type BlogPostFormInput = z.input<typeof blogPostSchema>;
@@ -109,6 +114,7 @@ export const appointmentSchema = z.object({
   appointment_type: z.enum(["showing", "open_house", "consultation", "closing"]).default("showing"),
   notes: z.string().optional(),
   property_id: z.string().uuid().or(z.literal("")).optional(),
+  lead_id: z.string().uuid().or(z.literal("")).optional(),
 });
 
 export type AppointmentFormInput = z.input<typeof appointmentSchema>;

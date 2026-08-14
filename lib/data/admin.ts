@@ -33,7 +33,7 @@ export async function getListingByIdAdmin(id: string): Promise<Property | null> 
 
 export async function getAllTestimonialsAdmin(): Promise<Testimonial[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("testimonials").select("*").order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("testimonials").select("*").order("display_order", { ascending: true });
   if (error) {
     console.error("[admin] getAllTestimonialsAdmin failed", error.message);
     return [];

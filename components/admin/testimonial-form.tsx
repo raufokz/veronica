@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { Star } from "lucide-react";
 import { testimonialSchema, type TestimonialFormInput } from "@/lib/schemas";
 import { createTestimonial, updateTestimonial, deleteTestimonial } from "@/app/actions/admin-testimonials";
 import { Input } from "@/components/ui/input";
@@ -86,8 +87,31 @@ export function TestimonialForm({ testimonial }: { testimonial?: Testimonial | n
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5">
-          <Label>Rating (1–5)</Label>
-          <Input type="number" min={1} max={5} {...register("rating")} />
+          <Label>Rating</Label>
+          <Controller
+            control={control}
+            name="rating"
+            render={({ field }) => (
+              <div className="flex items-center gap-1 h-9">
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => field.onChange(value)}
+                    aria-label={`${value} star${value === 1 ? "" : "s"}`}
+                    className="p-0.5"
+                  >
+                    <Star
+                      className={cn(
+                        "size-5 transition-colors",
+                        Number(field.value ?? 0) >= value ? "fill-gold text-gold" : "text-black/20"
+                      )}
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          />
         </div>
         <div className="space-y-1.5">
           <Label>Transaction type</Label>

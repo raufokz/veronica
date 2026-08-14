@@ -9,7 +9,7 @@ export async function getFeaturedTestimonials(): Promise<Testimonial[]> {
     .from("testimonials")
     .select("*")
     .eq("is_published", true)
-    .order("created_at", { ascending: false });
+    .order("display_order", { ascending: true });
 
   if (error) {
     console.error("[data] getFeaturedTestimonials failed", error.message);
