@@ -30,17 +30,18 @@ export async function generateMetadata({
   const description =
     post.meta_description ?? post.excerpt ?? post.title;
   const published = post.published_at ?? post.created_at;
+  const ogImage = post.og_image ?? post.cover_image;
 
   return {
-    title: post.title,
+    title: post.meta_title ?? post.title,
     description,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
-      title: post.title,
+      title: post.meta_title ?? post.title,
       description,
       type: "article",
       publishedTime: published,
-      images: post.cover_image ? [{ url: post.cover_image }] : undefined,
+      images: ogImage ? [{ url: ogImage }] : undefined,
     },
   };
 }

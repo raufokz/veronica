@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ImageUploader } from "@/components/admin/image-uploader";
+import { AmenityChips } from "@/components/admin/amenity-chips";
 import {
   Select,
   SelectContent,
@@ -49,6 +50,9 @@ function toFormValues(property?: Property | null): Partial<PropertyFormInput> {
     mls_number: property.mls_number ?? "",
     featured: property.featured,
     published: property.published,
+    meta_title: property.meta_title ?? "",
+    meta_description: property.meta_description ?? "",
+    og_image: property.og_image ?? "",
   };
 }
 
@@ -203,8 +207,39 @@ export function ListingForm({ property }: { property?: Property | null }) {
         </Field>
       </div>
 
-      <Field label="Amenities (comma separated)">
-        <Input {...register("amenities")} placeholder="Pool, Garage, Fireplace" />
+      <Field label="Amenities">
+        <Controller
+          control={control}
+          name="amenities"
+          render={({ field }) => (
+            <AmenityChips value={field.value ?? ""} onChange={field.onChange} />
+          )}
+        />
+      </Field>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Meta title (SEO)">
+          <Input {...register("meta_title")} placeholder="Optional — defaults to the listing title" />
+        </Field>
+        <Field label="Meta description (SEO)">
+          <Input {...register("meta_description")} placeholder="Optional — shown in Google results" />
+        </Field>
+      </div>
+
+      <Field label="Social share image (OG image)" hint="Optional — defaults to the cover photo">
+        <Controller
+          control={control}
+          name="og_image"
+          render={({ field }) => (
+            <ImageUploader
+              value={field.value ? [field.value] : []}
+              onChange={(urls) => field.onChange(urls[0] ?? "")}
+              bucket="property-images"
+              folder="og"
+              single
+            />
+          )}
+        />
       </Field>
 
       <div className="flex gap-6">
@@ -256,16 +291,19 @@ export function ListingForm({ property }: { property?: Property | null }) {
 function Field({
   label,
   error,
+  hint,
   children,
 }: {
   label: string;
   error?: string;
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
     <div className="space-y-1.5">
       <Label>{label}</Label>
       {children}
+      {hint && !error && <p className="text-xs text-slate">{hint}</p>}
       {error && <p className="text-xs text-brand">{error}</p>}
     </div>
   );

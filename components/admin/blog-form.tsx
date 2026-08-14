@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ImageUploader } from "@/components/admin/image-uploader";
+import { MarkdownTextarea } from "@/components/admin/markdown-textarea";
 import {
   Select,
   SelectContent,
@@ -41,7 +42,9 @@ function toFormValues(post?: BlogPost | null): Partial<BlogPostFormInput> {
     status: post.status,
     published_at: post.published_at ? post.published_at.slice(0, 16) : "",
     author: post.author ?? "Veronica Medellin",
+    meta_title: post.meta_title ?? "",
     meta_description: post.meta_description ?? "",
+    og_image: post.og_image ?? "",
   };
 }
 
@@ -165,9 +168,15 @@ export function BlogForm({ post }: { post?: BlogPost | null }) {
       <Field
         label="Content *"
         error={errors.content?.message}
-        hint="Supports ## headings, > blockquotes, and - / 1. lists. Leave a blank line between blocks."
+        hint="Use the toolbar, or write ## headings, > blockquotes, and - / 1. lists by hand. Leave a blank line between blocks."
       >
-        <Textarea rows={14} {...register("content")} className="font-mono text-sm" />
+        <Controller
+          control={control}
+          name="content"
+          render={({ field }) => (
+            <MarkdownTextarea value={field.value ?? ""} onChange={field.onChange} rows={14} />
+          )}
+        />
       </Field>
 
       <div className="grid grid-cols-2 gap-4">
@@ -179,8 +188,29 @@ export function BlogForm({ post }: { post?: BlogPost | null }) {
         </Field>
       </div>
 
-      <Field label="Meta description (SEO)">
-        <Input {...register("meta_description")} placeholder="Optional — shown in Google results" />
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Meta title (SEO)">
+          <Input {...register("meta_title")} placeholder="Optional — defaults to the post title" />
+        </Field>
+        <Field label="Meta description (SEO)">
+          <Input {...register("meta_description")} placeholder="Optional — shown in Google results" />
+        </Field>
+      </div>
+
+      <Field label="Social share image (OG image)" hint="Optional — defaults to the cover image">
+        <Controller
+          control={control}
+          name="og_image"
+          render={({ field }) => (
+            <ImageUploader
+              value={field.value ? [field.value] : []}
+              onChange={(urls) => field.onChange(urls[0] ?? "")}
+              bucket="blog-images"
+              folder="og"
+              single
+            />
+          )}
+        />
       </Field>
 
       <div className="flex items-center gap-4">

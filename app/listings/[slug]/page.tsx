@@ -28,9 +28,12 @@ export async function generateMetadata({
   const property = await getListingBySlug(slug);
   if (!property) return {};
 
-  const title = `${property.title} — ${property.address}, ${property.city}`;
+  const title = property.meta_title || `${property.title} — ${property.address}, ${property.city}`;
   const description =
-    property.description ?? `${property.bedrooms ?? "—"} bd, ${property.bathrooms ?? "—"} ba home in ${property.neighborhood ?? property.city}.`;
+    property.meta_description ||
+    property.description ||
+    `${property.bedrooms ?? "—"} bd, ${property.bathrooms ?? "—"} ba home in ${property.neighborhood ?? property.city}.`;
+  const ogImage = property.og_image ?? property.images?.[0];
 
   return {
     title,
@@ -39,7 +42,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      images: property.images?.[0] ? [{ url: property.images[0] }] : undefined,
+      images: ogImage ? [{ url: ogImage }] : undefined,
     },
   };
 }

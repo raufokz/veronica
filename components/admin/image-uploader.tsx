@@ -20,20 +20,35 @@ export function ImageUploader({
   bucket = "property-images",
   folder = "listings",
   single = false,
+  maxImages = 15,
 }: {
   value: string[];
   onChange: (urls: string[]) => void;
   bucket?: string;
   folder?: string;
   single?: boolean;
+  maxImages?: number;
 }) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function uploadFiles(files: FileList | File[]) {
     const supabase = createClient();
-    const list = Array.from(files);
+    let list = Array.from(files);
+
+    if (!single) {
+      const remaining = maxImages - value.length;
+      if (remaining <= 0) {
+        toast.error(`You can have up to ${maxImages} photos.`);
+        return;
+      }
+      if (list.length > remaining) {
+        toast.error(`Only ${remaining} more photo${remaining === 1 ? "" : "s"} allowed — uploading the first ${remaining}.`);
+        list = list.slice(0, remaining);
+      }
+    }
 
     const valid = list.filter((file) => {
       if (!file.type.startsWith("image/")) {
@@ -91,6 +106,14 @@ export function ImageUploader({
     onChange(next);
   }
 
+  function reorder(fromIndex: number, toIndex: number) {
+    if (fromIndex === toIndex) return;
+    const next = [...value];
+    const [moved] = next.splice(fromIndex, 1);
+    next.splice(toIndex, 0, moved);
+    onChange(next);
+  }
+
   return (
     <div>
       <div
@@ -132,10 +155,31 @@ export function ImageUploader({
         />
       </div>
 
+      {!single && value.length > 0 && (
+        <p className="mt-3 text-xs text-slate">
+          {value.length} / {maxImages} photos — drag thumbnails to reorder.
+        </p>
+      )}
+
       {value.length > 0 && (
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {value.map((url, index) => (
-            <div key={url} className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-black/10">
+            <div
+              key={url}
+              draggable={!single}
+              onDragStart={() => setDraggingIndex(index)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                if (draggingIndex !== null) reorder(draggingIndex, index);
+                setDraggingIndex(null);
+              }}
+              className={cn(
+                "group relative aspect-[4/3] overflow-hidden rounded-lg border border-black/10 transition-opacity",
+                !single && "cursor-grab",
+                draggingIndex === index ? "opacity-40" : ""
+              )}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={url} alt="" className="h-full w-full object-cover" />
 
