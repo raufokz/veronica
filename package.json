@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "db:link": "npx --yes supabase@latest link --project-ref altbyubhdvnetvnsmtkm",
+    "db:new": "npx --yes supabase@latest migration new",
+    "db:status": "npx --yes supabase@latest migration list",
+    "db:push": "npx --yes supabase@latest db push",
+    "db:types": "npx --yes supabase@latest gen types typescript --project-id altbyubhdvnetvnsmtkm --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
