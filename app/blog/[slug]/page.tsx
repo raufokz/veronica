@@ -15,6 +15,10 @@ export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await getAllBlogPostSlugs();
+  // An empty result makes the Vercel build fail with "Unable to find lambda for
+  // route", so keep one placeholder path when there is nothing published yet.
+  // It renders the normal not-found page and is replaced as soon as posts exist.
+  if (slugs.length === 0) return [{ slug: "__placeholder" }];
   return slugs.map((slug) => ({ slug }));
 }
 
