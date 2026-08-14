@@ -54,12 +54,19 @@ jobs:
       - name: Check for Supabase secrets
         id: check
         run: |
-          if [ -n "$SUPABASE_ACCESS_TOKEN" ] && [ -n "$SUPABASE_DB_PASSWORD" ]; then
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          else
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then
             echo "ready=false" >> "$GITHUB_OUTPUT"
             echo "::warning::SUPABASE_ACCESS_TOKEN / SUPABASE_DB_PASSWORD not set — skipping migrations."
+            exit 0
           fi
+          case "$SUPABASE_ACCESS_TOKEN" in
+            sbp_*) ;;
+            *)
+              echo "::error::SUPABASE_ACCESS_TOKEN must be a personal access token starting with sbp_ (create one at https://supabase.com/dashboard/account/tokens). The anon key, service-role key and database password will not work here."
+              exit 1
+              ;;
+          esac
+          echo "ready=true" >> "$GITHUB_OUTPUT"
 
       - uses: supabase/setup-cli@v1
         if: steps.check.outputs.ready == 'true'
