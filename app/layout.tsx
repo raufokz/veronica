@@ -9,6 +9,7 @@ import { MobileDock } from "@/components/mobile-dock";
 import { Toaster } from "@/components/ui/sonner";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { siteConfig } from "@/lib/site-config";
+import { getSiteSettings } from "@/lib/data/crm";
 import type { Lang } from "@/lib/dict";
 
 const poppinsDisplay = Poppins({
@@ -25,30 +26,38 @@ const poppinsSans = Poppins({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.siteUrl),
-  title: {
-    default: "Veronica Medellin | Houston & Clear Lake REALTOR® | HomeSmart",
-    template: "%s | Veronica Medellin, REALTOR®",
-  },
-  description:
-    "Bilingual Houston REALTOR® with 10+ years helping families buy, sell and invest in Clear Lake, League City and the Bay Area. Free home valuation. Se habla español.",
-  alternates: {
-    canonical: "/",
-    languages: { "en-US": "/", "es-US": "/es" },
-  },
-  openGraph: {
-    title: "Veronica Medellin | Houston REALTOR®",
-    description:
-      "Buy, sell or invest in Houston & Clear Lake with a bilingual agent who explains every step.",
-    url: "/",
-    siteName: "Veronica Medellin, REALTOR®",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: { card: "summary_large_image" },
-};
+const defaultTitle = "Veronica Medellin | Houston & Clear Lake REALTOR® | HomeSmart";
+const defaultDescription =
+  "Bilingual Houston REALTOR® with 10+ years helping families buy, sell and invest in Clear Lake, League City and the Bay Area. Free home valuation. Se habla español.";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const title = settings?.site_title || defaultTitle;
+  const description = settings?.site_description || defaultDescription;
+
+  return {
+    metadataBase: new URL(siteConfig.siteUrl),
+    title: {
+      default: title,
+      template: "%s | Veronica Medellin, REALTOR®",
+    },
+    description,
+    alternates: {
+      canonical: "/",
+      languages: { "en-US": "/", "es-US": "/es" },
+    },
+    openGraph: {
+      title,
+      description,
+      url: "/",
+      siteName: "Veronica Medellin, REALTOR®",
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
+  };
+}
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const cookieStore = await cookies();
