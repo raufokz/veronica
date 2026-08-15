@@ -43,7 +43,7 @@ export default async function ListingsPage({
   return (
     <div className="container-app section-pad">
       <p className="eyebrow">HOUSTON · CLEAR LAKE · BAY AREA</p>
-      <h1 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold">Current Listings</h1>
+      <h1 className="mt-3 h-display">Current Listings</h1>
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
         <Suspense fallback={<div className="h-96 rounded-xl bg-sand" />}>

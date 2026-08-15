@@ -33,7 +33,7 @@ export function ListingCard({ property, lang = "en" }: { property: Property; lan
   return (
     <Link
       href={`/listings/${property.slug}`}
-      className="group block rounded-xl border border-black/10 bg-white overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_2px_12px_rgb(22_22_18_/_0.06)]"
+      className="group block rounded-xl border border-black/10 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lg"
     >
       <div className="relative aspect-[4/3] bg-sand">
         {image ? (

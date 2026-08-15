@@ -55,7 +55,7 @@ export default async function BlogIndexPage({
   return (
     <div className="container-app section-pad">
       <p className="eyebrow">MARKET INSIGHTS</p>
-      <h1 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold max-w-2xl">
+      <h1 className="mt-3 h-display max-w-2xl">
         Tips, trends, and what&apos;s actually happening in Houston real estate
       </h1>
 
@@ -63,7 +63,7 @@ export default async function BlogIndexPage({
         <div className="flex flex-wrap items-center gap-2">
           <Link
             href={buildHref({ q: search })}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors cursor-pointer ${
               !activeCategory
                 ? "bg-ink text-white"
                 : "border border-black/10 text-ink/70 hover:border-ink"
@@ -75,7 +75,7 @@ export default async function BlogIndexPage({
             <Link
               key={slug}
               href={activeCategory === slug ? buildHref({ q: search }) : buildHref({ category: slug, q: search })}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              className={`inline-flex min-h-[36px] items-center justify-center rounded-full px-4 text-sm font-medium transition-colors cursor-pointer ${
                 activeCategory === slug
                   ? "bg-ink text-white"
                   : "border border-black/10 text-ink/70 hover:border-ink"
@@ -89,7 +89,7 @@ export default async function BlogIndexPage({
         <BlogSearchForm defaultValue={search ?? ""} category={activeCategory} />
       </div>
 
-      <Suspense fallback={<div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" />}>
+      <Suspense fallback={<div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse" />}>
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
             <BlogCard key={post.id} post={post} />
@@ -98,23 +98,25 @@ export default async function BlogIndexPage({
       </Suspense>
 
       {posts.length === 0 && (
-        <p className="mt-10 text-slate">
-          {search || activeCategory ? (
-            <>
-              No posts match that search —{" "}
-              <Link href="/blog" className="text-brand underline underline-offset-2">
-                clear filters
-              </Link>{" "}
-              or{" "}
-            </>
-          ) : (
-            "No posts yet — check back soon, or "
-          )}
-          <Link href="/contact" className="text-brand underline underline-offset-2">
-            ask Veronica a question
-          </Link>{" "}
-          directly.
-        </p>
+        <div className="mt-10 rounded-xl border border-dashed border-black/10 bg-sand/30 p-12 text-center max-w-2xl">
+          <p className="text-slate font-medium">
+            {search || activeCategory ? (
+              <>
+                No posts match that search —{" "}
+                <Link href="/blog" className="text-brand underline underline-offset-2">
+                  clear filters
+                </Link>{" "}
+                or{" "}
+              </>
+            ) : (
+              "No posts yet — check back soon, or "
+            )}
+            <Link href="/contact" className="text-brand underline underline-offset-2">
+              ask Veronica a question
+            </Link>{" "}
+            directly.
+          </p>
+        </div>
       )}
 
       {totalPages > 1 && (
@@ -124,7 +126,7 @@ export default async function BlogIndexPage({
               key={p}
               href={buildHref({ category: activeCategory, q: search, page: p })}
               aria-current={p === page ? "page" : undefined}
-              className={`flex size-9 items-center justify-center rounded-full text-sm font-medium tabular-nums transition-colors ${
+              className={`flex size-11 items-center justify-center rounded-full text-sm font-medium tabular-nums transition-colors cursor-pointer ${
                 p === page
                   ? "bg-ink text-white"
                   : "border border-black/10 text-ink/70 hover:border-ink"

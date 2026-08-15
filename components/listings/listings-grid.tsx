@@ -15,9 +15,9 @@ export function ListingsGrid({ properties }: { properties: Property[] }) {
 
   if (properties.length === 0) {
     return (
-      <div className="rounded-xl border border-black/10 bg-sand p-8">
-        <p className="text-slate">{emptyCopy[lang]}</p>
-        <ContactForm sourcePage="/listings" defaultInterest="buying" className="mt-6 max-w-md" />
+      <div className="rounded-xl border border-dashed border-black/10 bg-sand/30 p-8 shadow-sm">
+        <p className="text-slate font-medium max-w-[58ch] leading-relaxed">{emptyCopy[lang]}</p>
+        <ContactForm sourcePage="/listings" defaultInterest="buying" className="mt-6 max-w-md bg-white p-6 rounded-xl border border-black/10 shadow-xs" />
       </div>
     );
   }

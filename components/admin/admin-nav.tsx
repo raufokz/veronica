@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -144,6 +144,7 @@ export function AdminSidebar({ email, counts }: { email: string; counts: AdminNa
 export function AdminMobileNav({ email, counts }: { email: string; counts: AdminNavCounts }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   // Close the drawer whenever navigation lands on a new page.
   useEffect(() => {
@@ -157,6 +158,46 @@ export function AdminMobileNav({ email, counts }: { email: string; counts: Admin
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open || !drawerRef.current) return;
+
+    // Select focusable elements inside the drawer
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex="0"]';
+    const focusableElements = drawerRef.current.querySelectorAll(focusableSelectors);
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    if (firstElement) {
+      // Small timeout to ensure DOM transitions are ready
+      setTimeout(() => firstElement.focus(), 50);
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
   return (
     <div className="lg:hidden">
       <div className="flex h-14 items-center justify-between border-b border-black/10 bg-ink px-4">
@@ -167,9 +208,9 @@ export function AdminMobileNav({ email, counts }: { email: string; counts: Admin
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Open menu"
-          className="rounded-lg p-2 text-white/80 hover:bg-white/10 hover:text-white"
+          className="rounded-lg p-2.5 text-white/80 hover:bg-white/10 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
         >
-          <Menu className="size-5" />
+          <Menu className="size-6" />
         </button>
       </div>
 
@@ -179,16 +220,16 @@ export function AdminMobileNav({ email, counts }: { email: string; counts: Admin
             type="button"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/50 cursor-pointer"
           />
-          <div className="relative flex h-full w-72 flex-col bg-ink">
+          <div ref={drawerRef} className="relative flex h-full w-72 flex-col bg-ink">
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="absolute right-3 top-3 rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white"
+              className="absolute right-3 top-3 rounded-lg p-2.5 text-white/70 hover:bg-white/10 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer z-10"
             >
-              <X className="size-5" />
+              <X className="size-6" />
             </button>
             <SidebarBody email={email} counts={counts} onNavigate={() => setOpen(false)} />
           </div>

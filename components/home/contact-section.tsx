@@ -15,6 +15,8 @@ const bookCopy = {
   cta: { en: "Book a call directly", es: "Agenda una llamada directamente" },
 };
 
+import { Reveal } from "@/components/reveal";
+
 export function ContactSection({
   headingLevel: Heading = "h2",
   sourcePage = "/",
@@ -27,17 +29,20 @@ export function ContactSection({
   return (
     <section id="contact" className="section-pad bg-white">
       <div className="container-app grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div>
-          <p className="eyebrow">{t(dict.contact.eyebrow, lang)}</p>
-          <Heading className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold">{t(dict.contact.h2, lang)}</Heading>
-          <ContactForm sourcePage={sourcePage} className="mt-8" />
-        </div>
+        <Reveal>
+          <div>
+            <p className="eyebrow">{t(dict.contact.eyebrow, lang)}</p>
+            <Heading className="mt-3 h-section">{t(dict.contact.h2, lang)}</Heading>
+            <ContactForm sourcePage={sourcePage} className="mt-8" />
+          </div>
+        </Reveal>
 
-        <div className="space-y-8">
-          <div className="flex items-center gap-4 p-4 rounded-xl border border-black/10 bg-sand/60">
-            <AgentPhoto variant="closeup" className="size-16 rounded-full border border-black/10 shrink-0" />
-            <div>
-              <p className="font-display font-semibold text-base text-ink">Veronica Medellin</p>
+        <Reveal delay={0.1}>
+          <div className="space-y-8">
+            <div className="flex items-center gap-4 p-4 rounded-xl border border-black/10 bg-sand/60">
+              <AgentPhoto variant="closeup" className="size-16 rounded-full border border-black/10 shrink-0" />
+              <div>
+                <p className="font-display font-semibold text-base text-ink">Veronica Medellin</p>
               <p className="text-xs text-slate font-medium">Bilingual REALTOR® · Houston & Bay Area</p>
               <p className="text-xs text-brand font-medium mt-0.5">TREC License #{siteConfig.trecLicense}</p>
             </div>
@@ -97,6 +102,7 @@ export function ContactSection({
             />
           </div>
         </div>
+      </Reveal>
       </div>
     </section>
   );

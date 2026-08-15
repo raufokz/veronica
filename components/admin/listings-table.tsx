@@ -134,7 +134,10 @@ export function ListingsTable({ listings }: { listings: Property[] }) {
                 <td className="p-4">{property.featured ? <Badge>Featured</Badge> : "—"}</td>
                 <td className="p-4">{property.published ? "Yes" : "No"}</td>
                 <td className="p-4 text-right">
-                  <Link href={`/admin/listings/${property.id}/edit`} className="text-brand hover:underline">
+                  <Link
+                    href={`/admin/listings/${property.id}/edit`}
+                    className="inline-flex min-h-[36px] items-center justify-center rounded-lg border border-black/10 px-3 text-xs font-semibold text-ink transition-colors hover:bg-black/5 cursor-pointer"
+                  >
                     Edit
                   </Link>
                 </td>
@@ -152,12 +155,12 @@ export function ListingsTable({ listings }: { listings: Property[] }) {
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-4 flex items-center justify-center gap-2">
+        <div className="mt-6 flex items-center justify-center gap-2 flex-wrap">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <button
               key={p}
               onClick={() => setPage(p)}
-              className={`flex size-8 items-center justify-center rounded-full text-sm font-medium tabular-nums transition-colors ${
+              className={`flex size-11 items-center justify-center rounded-full text-sm font-medium tabular-nums transition-colors cursor-pointer ${
                 p === page ? "bg-ink text-white" : "border border-black/10 text-ink/70 hover:border-ink"
               }`}
             >

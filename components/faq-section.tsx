@@ -8,6 +8,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+import { Reveal } from "@/components/reveal";
+
 export type FaqItem = {
   q: { en: string; es: string };
   a: { en: string; es: string };
@@ -15,7 +17,7 @@ export type FaqItem = {
 
 const heading = { en: "Frequently asked questions", es: "Preguntas frecuentes" };
 
-export function FaqSection({ items }: { items: FaqItem[] }) {
+export function FaqSection({ items, bg = "bg-sand" }: { items: FaqItem[]; bg?: string }) {
   const { lang } = useLanguage();
 
   const jsonLd = {
@@ -29,25 +31,29 @@ export function FaqSection({ items }: { items: FaqItem[] }) {
   };
 
   return (
-    <section className="section-pad bg-sand">
+    <section className={`section-pad ${bg}`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="container-app max-w-2xl">
-        <h2 className="text-[clamp(2rem,3.5vw,3rem)] font-semibold">{heading[lang]}</h2>
-        <Accordion className="mt-6">
-          {items.map((item, i) => (
-            <AccordionItem key={i} value={`item-${i}`}>
-              <AccordionTrigger className="text-left font-display text-lg">
-                {item.q[lang]}
-              </AccordionTrigger>
-              <AccordionContent className="text-slate leading-relaxed">
-                {item.a[lang]}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+        <Reveal>
+          <h2 className="h-section">{heading[lang]}</h2>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <Accordion className="mt-6">
+            {items.map((item, i) => (
+              <AccordionItem key={i} value={`item-${i}`}>
+                <AccordionTrigger className="text-left font-display text-lg font-semibold text-ink">
+                  {item.q[lang]}
+                </AccordionTrigger>
+                <AccordionContent className="text-slate leading-relaxed pb-4">
+                  {item.a[lang]}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Reveal>
       </div>
     </section>
   );

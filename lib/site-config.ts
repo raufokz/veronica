@@ -11,7 +11,19 @@ export const siteConfig = {
     "https://outlook.office365.com/owa/calendar/Bookacall@NETORGFT20924878.onmicrosoft.com/bookings/",
   trecLicense: "0614869",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://veronicasellshouston.com",
-  serviceAreas: ["Houston", "Clear Lake", "League City", "Friendswood", "Pearland", "Webster"],
+  serviceAreas: [
+    "Houston",
+    "Sugar Land",
+    "Stafford",
+    "Galleria / Uptown",
+    "Clear Lake",
+    "League City",
+    "Friendswood",
+    "Pearland",
+    "Webster",
+  ],
+  // ZIPs Veronica actively covers. 77402 is a PO-box-only ZIP for Sugar Land.
+  serviceZips: ["77479", "77498", "77056", "77402"],
   social: {
     facebook: "https://www.facebook.com/veronica.medellin.333940/",
     instagram: "https://www.instagram.com/vmrealtor2023/",

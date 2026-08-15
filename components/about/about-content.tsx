@@ -7,6 +7,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
+import { Reveal } from "@/components/reveal";
+
 const copy = {
   eyebrow: { en: "VERONICA MEDELLIN, REALTOR®", es: "VERONICA MEDELLIN, REALTOR®" },
   h1: { en: "You've got the goal. I've got the map.", es: "Tú tienes la meta. Yo tengo el mapa." },
@@ -58,63 +60,70 @@ export function AboutContent() {
   const { lang } = useLanguage();
 
   return (
-    <div className="container-app section-pad space-y-20">
+    <div className="container-app section-pad space-y-24">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         <div className="lg:col-span-7">
-          <p className="eyebrow">{copy.eyebrow[lang]}</p>
-          <h1 className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[1.05]">
-            {copy.h1[lang]}
-          </h1>
-          <p className="mt-6 text-[1.0625rem] leading-[1.7] text-slate">{copy.intro[lang]}</p>
-          <p className="mt-4 text-[1.0625rem] leading-[1.7] text-slate">{copy.body2[lang]}</p>
+          <Reveal>
+            <p className="eyebrow">{copy.eyebrow[lang]}</p>
+            <h1 className="mt-3 h-display font-semibold">
+              {copy.h1[lang]}
+            </h1>
+            <p className="mt-4 text-[1.0625rem] leading-[1.7] text-slate max-w-[58ch]">{copy.intro[lang]}</p>
+            <p className="mt-4 text-[1.0625rem] leading-[1.7] text-slate max-w-[58ch]">{copy.body2[lang]}</p>
 
-          <h2 className="mt-10 font-display text-xl">{copy.credentialsHeading[lang]}</h2>
-          <ul className="mt-4 space-y-3">
-            {ticks.map((tick) => (
-              <li key={tick.en} className="flex items-start gap-3 text-sm">
-                <Check className="mt-0.5 size-4 shrink-0 text-gold" />
-                <span>{lang === "es" ? tick.es : tick.en}</span>
-              </li>
-            ))}
-          </ul>
+            <h2 className="mt-8 font-display text-xl font-semibold text-ink">{copy.credentialsHeading[lang]}</h2>
+            <ul className="mt-4 space-y-3">
+              {ticks.map((tick) => (
+                <li key={tick.en} className="flex items-start gap-3 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-gold" />
+                  <span>{lang === "es" ? tick.es : tick.en}</span>
+                </li>
+              ))}
+            </ul>
 
-          <a
-            href={siteConfig.bookingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(buttonVariants({ size: "lg" }), "mt-8 rounded-full bg-brand hover:bg-brand/90 text-white px-6")}
-          >
-            {copy.cta[lang]}
-          </a>
+            <a
+              href={siteConfig.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ size: "lg" }), "mt-8 rounded-full bg-brand hover:bg-brand/90 text-white px-6")}
+            >
+              {copy.cta[lang]}
+            </a>
+          </Reveal>
         </div>
 
         <div className="lg:col-span-5 lg:sticky lg:top-24">
-          <AgentPhoto variant="stool" priority className="aspect-[4/5] w-full rounded-xl border border-black/5 shadow-lg" />
+          <Reveal delay={0.1}>
+            <AgentPhoto variant="stool" priority className="aspect-[4/5] w-full rounded-xl border border-black/5 shadow-md" />
+          </Reveal>
         </div>
       </div>
 
       <div className="border-t border-black/10 pt-16">
-        <div className="max-w-xl">
-          <p className="eyebrow">{lang === "es" ? "GALERÍA Y PERFIL" : "PORTFOLIO & GALLERY"}</p>
-          <h2 className="mt-3 font-display text-2xl md:text-3xl">
-            {lang === "es"
-              ? "Compromiso profesional en cada representación"
-              : "Professional commitment across every transaction"}
-          </h2>
-        </div>
+        <Reveal>
+          <div className="max-w-xl">
+            <p className="eyebrow">{lang === "es" ? "GALERÍA Y PERFIL" : "PORTFOLIO & GALLERY"}</p>
+            <h2 className="mt-3 h-section">
+              {lang === "es"
+                ? "Compromiso profesional en cada representación"
+                : "Professional commitment across every transaction"}
+            </h2>
+          </div>
+        </Reveal>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {galleryItems.map((item) => (
-            <div
-              key={item.variant}
-              className="group overflow-hidden rounded-xl border border-black/10 bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-            >
-              <AgentPhoto variant={item.variant} className="aspect-[4/5] w-full" />
-              <div className="p-4 border-t border-black/5 bg-sand/40">
-                <h3 className="font-display font-semibold text-base">{item.title[lang]}</h3>
-                <p className="mt-1 text-xs text-slate">{item.subtitle[lang]}</p>
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {galleryItems.map((item, i) => (
+            <Reveal key={item.variant} delay={i * 0.05} className="h-full">
+              <div
+                className="group h-full overflow-hidden rounded-xl border border-black/10 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lg"
+              >
+                <AgentPhoto variant={item.variant} className="aspect-[4/5] w-full" />
+                <div className="p-4 border-t border-black/5 bg-sand/40">
+                  <h3 className="font-display font-semibold text-base text-ink">{item.title[lang]}</h3>
+                  <p className="mt-1 text-xs text-slate">{item.subtitle[lang]}</p>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

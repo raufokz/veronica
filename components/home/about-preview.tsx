@@ -9,6 +9,8 @@ import { AgentPhoto } from "@/components/agent-photo";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
+import { Reveal } from "@/components/reveal";
+
 const ticks = [
   { en: `Licensed Texas REALTOR® — TREC #${siteConfig.trecLicense}`, es: `REALTOR® con licencia en Texas — TREC #${siteConfig.trecLicense}` },
   { en: "Houston Association of REALTORS® member", es: "Miembro de la Asociación de REALTORES® de Houston" },
@@ -28,28 +30,32 @@ export function AboutPreview() {
   return (
     <section className="section-pad bg-white">
       <div className="container-app grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <AgentPhoto variant="luxury" className="aspect-[4/5] w-full rounded-xl border border-black/5 shadow-md order-2 lg:order-1" />
+        <Reveal className="order-2 lg:order-1">
+          <AgentPhoto variant="luxury" className="aspect-[4/5] w-full rounded-xl border border-black/5 shadow-md" />
+        </Reveal>
 
         <div className="order-1 lg:order-2">
-          <p className="eyebrow">{t(dict.about.eyebrow, lang)}</p>
-          <h2 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold">{t(dict.about.h2, lang)}</h2>
-          <p className="mt-5 text-[1.0625rem] leading-[1.7] text-slate">{t(body, lang)}</p>
+          <Reveal>
+            <p className="eyebrow">{t(dict.about.eyebrow, lang)}</p>
+            <h2 className="mt-3 h-section">{t(dict.about.h2, lang)}</h2>
+            <p className="mt-4 text-[1.0625rem] leading-[1.7] text-slate max-w-[58ch]">{t(body, lang)}</p>
 
-          <ul className="mt-6 space-y-3">
-            {ticks.map((tick) => (
-              <li key={tick.en} className="flex items-start gap-3 text-sm">
-                <Check className="mt-0.5 size-4 shrink-0 text-gold" />
-                <span>{t(tick, lang)}</span>
-              </li>
-            ))}
-          </ul>
+            <ul className="mt-6 space-y-3">
+              {ticks.map((tick) => (
+                <li key={tick.en} className="flex items-start gap-3 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-gold" />
+                  <span>{t(tick, lang)}</span>
+                </li>
+              ))}
+            </ul>
 
-          <Link
-            href="/about"
-            className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mt-8 rounded-full px-6 border-ink/20")}
-          >
-            {t(dict.about.cta, lang)}
-          </Link>
+            <Link
+              href="/about"
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mt-8 rounded-full px-6 border-ink/20")}
+            >
+              {t(dict.about.cta, lang)}
+            </Link>
+          </Reveal>
         </div>
       </div>
     </section>
