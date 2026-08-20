@@ -1,13 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { Phone, Mail, ArrowRight, MapPin, MessageSquare } from "lucide-react";
 import Link from "next/link";
-import { MapPin, PhoneCall, CheckCircle2, ArrowRight } from "lucide-react";
+import { siteConfig } from "@/lib/site-config";
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import { dict, t } from "@/lib/dict";
-import { buttonVariants } from "@/components/ui/button";
-import { AgentPhoto } from "@/components/agent-photo";
-import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 export type HeroOverrides = {
   headline?: string;
@@ -16,157 +17,158 @@ export type HeroOverrides = {
   cta2Label?: string;
 };
 
-export function HeroClient({ overrides }: { overrides?: HeroOverrides }) {
-  const { lang } = useLanguage();
-  const useOverride = lang === "en";
+const bgImages = [
+  "/hero_luxury_lounge.png",
+  "/hero_lounge_2.png",
+  "/hero_lounge_3.png",
+  "/hero_lounge_4.png",
+];
 
-  const headline = (useOverride && overrides?.headline) || t(dict.hero.h1, lang);
-  const subtitle = (useOverride && overrides?.subtitle) || t(dict.hero.sub, lang);
-  const cta1Label = (useOverride && overrides?.cta1Label) || t(dict.hero.cta1, lang);
-  const cta2Label = (useOverride && overrides?.cta2Label) || t(dict.hero.cta2, lang);
+export function HeroClient({ overrides: _overrides }: { overrides?: HeroOverrides } = {}) {
+  const { lang } = useLanguage();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Background slider loop every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bgImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-sand/50 via-paper to-paper pt-12 pb-16 md:pt-20 md:pb-24">
-      <div className="container-app">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
-          {/* Left Column: Text, Zip Code Chips & CTAs */}
-          <div className="lg:col-span-7 flex flex-col items-start">
-            
-            {/* Eyebrow Pill */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand border border-brand/20">
-              <MapPin className="size-3.5 text-brand" />
-              <span>{t(dict.hero.eyebrow, lang)}</span>
-            </div>
+    <div className="w-full relative pb-10">
+      {/* Background Image Carousel Container */}
+      <div className="relative w-full h-[550px] sm:h-[650px] md:h-[700px] lg:h-[750px] overflow-hidden bg-ink">
+        {bgImages.map((src, index) => (
+          <div
+            key={src}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+              index === currentSlide ? "opacity-100 scale-100" : "opacity-0 scale-105 pointer-events-none"
+            )}
+          >
+            <Image
+              src={src}
+              alt={`Luxury Room View ${index + 1}`}
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className="object-cover object-center transition-transform duration-[5s] ease-linear"
+            />
+          </div>
+        ))}
 
-            {/* Headline */}
-            <h1 className="mt-5 max-w-[15ch] text-balance font-display text-[clamp(2.5rem,5vw,4rem)] font-bold leading-[1.05] tracking-[-0.03em] text-ink">
-              {headline}
-            </h1>
+        {/* Backdrop overlay for dark contrast */}
+        <div className="absolute inset-0 bg-black/45" />
 
-            {/* Subtitle */}
-            <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-slate md:text-lg">
-              {subtitle}
+        {/* Content Card Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center px-4 sm:px-6">
+          <div className="w-full max-w-4xl bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-6 sm:p-10 text-center text-white shadow-2xl animate-fade-in">
+            {/* Tagline / Eyebrow */}
+            <p className="font-display text-xs sm:text-sm font-semibold tracking-[0.25em] text-[#c5a059] uppercase mb-4">
+              {t(dict.hero.eyebrow, lang)}
             </p>
 
-            {/* Target Zip Codes & Areas Chips */}
-            <div className="mt-6 w-full max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate/80 mb-2.5">
-                {t(dict.hero.zipCodesTitle, lang)}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {dict.hero.zips.map((item) => (
-                  <Link
-                    key={item.zip}
-                    href={`/listings?neighborhood=${encodeURIComponent(item.name)}`}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-full border border-black/10 bg-white px-4 text-xs font-medium text-ink shadow-xs transition-colors duration-200 hover:border-brand hover:text-brand lg:min-h-9"
-                  >
-                    <span className="font-semibold">{item.name}</span>
-                    <span className="tabular-nums text-slate">{item.zip}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+            {/* Headline */}
+            <h1 className="font-display text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight uppercase max-w-[28ch] mx-auto">
+              {t(dict.hero.h1, lang)}
+            </h1>
 
-            {/* CTAs */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            {/* Description Subtitle */}
+            <p className="mt-4 text-xs sm:text-sm md:text-base leading-relaxed text-white/80 max-w-[55ch] mx-auto">
+              {t(dict.hero.sub, lang)}
+            </p>
+
+            {/* CTA Option Buttons */}
+            <div className="mt-6 flex flex-col sm:flex-row justify-center items-center gap-4">
               <a
                 href={siteConfig.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "rounded-full bg-brand hover:bg-brand/90 text-white px-7 h-12 text-sm font-semibold shadow-md transition-all hover:scale-[1.02] flex items-center gap-2"
+                  "w-full sm:w-auto rounded-none bg-[#b4934c] hover:bg-[#a3823b] text-white px-8 h-11 text-xs font-semibold uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2"
                 )}
               >
-                <span>{cta1Label}</span>
-                <ArrowRight className="size-4" />
+                <span>{t(dict.hero.cta1, lang)}</span>
+                <ArrowRight className="size-3.5" />
               </a>
 
               <Link
                 href="/home-value"
                 className={cn(
-                  buttonVariants({ variant: "outline", size: "lg" }),
-                  "rounded-full px-7 h-12 text-sm font-semibold border-ink/20 hover:bg-sand text-ink transition-all"
+                  buttonVariants({ size: "lg", variant: "outline" }),
+                  "w-full sm:w-auto rounded-none border-white/40 text-white bg-transparent hover:bg-white hover:text-ink px-8 h-11 text-xs font-semibold uppercase tracking-widest transition-all inline-flex items-center justify-center"
                 )}
               >
-                {cta2Label}
+                {t(dict.hero.cta2, lang)}
               </Link>
             </div>
 
-            {/* Key Stats Bar */}
-            <div className="mt-10 pt-6 border-t border-black/10 w-full max-w-2xl grid grid-cols-3 gap-4">
-              <div className="flex flex-col">
-                <span className="font-display text-xl md:text-2xl font-bold text-ink">10+</span>
-                <span className="text-xs text-slate font-medium">{t(dict.hero.stat1, lang)}</span>
+            {/* Map Pin Served Zipcodes Badge matching mockup */}
+            <div className="mt-8 mx-auto max-w-2xl bg-black/55 backdrop-blur-md rounded-xl p-4 border border-white/10 flex items-start gap-4 text-left">
+              <div className="bg-[#b4934c] p-2 rounded-lg text-white shrink-0 mt-0.5">
+                <MapPin className="size-5" />
               </div>
-              <div className="flex flex-col border-l border-black/10 pl-4">
-                <span className="font-display text-xl md:text-2xl font-bold text-ink">100+</span>
-                <span className="text-xs text-slate font-medium">{t(dict.hero.stat2, lang)}</span>
-              </div>
-              <div className="flex flex-col border-l border-black/10 pl-4">
-                <span className="font-display text-xl md:text-2xl font-bold text-brand">EN / ES</span>
-                <span className="text-xs text-slate font-medium">{t(dict.hero.stat3, lang)}</span>
-              </div>
-            </div>
-
-            {/* Trust Line */}
-            <p className="mt-5 text-xs text-slate flex items-center gap-1.5">
-              <CheckCircle2 className="size-3.5 text-brand shrink-0" />
-              <span>{t(dict.hero.trust, lang)}</span>
-            </p>
-
-          </div>
-
-          {/* Right Column: Veronica's Official Portrait Card (`veronica.jpg`) */}
-          <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[420px]">
-              
-              {/* Decorative Sand Backdrop Card */}
-              <div className="absolute -z-10 -bottom-4 -right-4 h-full w-full rounded-2xl bg-sand border border-black/5" />
-              
-              {/* Main Photo Container */}
-              <div className="relative rounded-2xl overflow-hidden border border-black/10 bg-white shadow-xl aspect-[4/5] group">
-                <AgentPhoto
-                  variant="headshot"
-                  priority
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                />
-                
-                {/* Floating Top Badge */}
-                <div className="absolute top-4 right-4 rounded-full bg-white/90 backdrop-blur-md px-3.5 py-1.5 text-xs font-semibold text-ink shadow-md border border-black/5 flex items-center gap-1.5">
-                  <span className="size-2 rounded-full bg-emerald-500" />
-                  <span>Bilingual REALTOR®</span>
-                </div>
-
-                {/* Floating Bottom Zipcode Card */}
-                <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-ink/90 backdrop-blur-md p-3.5 text-white shadow-lg border border-white/10 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-lg bg-brand text-white shrink-0">
-                      <PhoneCall className="size-4" />
-                    </div>
-                    <div className="flex flex-col text-left">
-                      <span className="text-xs font-semibold text-white/90">Veronica Medellin</span>
-                      <span className="text-[11px] tabular-nums text-white/60">
-                        {siteConfig.serviceZips.join(" · ")}
-                      </span>
-                    </div>
-                  </div>
-                  <a
-                    href={`tel:${siteConfig.phone}`}
-                    className="inline-flex min-h-11 items-center rounded-full px-3 text-xs font-bold text-brand transition-colors hover:bg-white/10 hover:underline lg:min-h-9"
-                    aria-label={`Call Veronica at ${siteConfig.phoneDisplay}`}
-                  >
-                    Call
-                  </a>
-                </div>
-
+              <div>
+                <p className="text-[10px] tracking-[0.15em] font-bold text-white/40 uppercase leading-none mb-1.5">
+                  {lang === "es" ? "ÁREAS Y CÓDIGOS POSTALES SERVIDOS" : "AREAS & ZIP CODES SERVED"}
+                </p>
+                <p className="text-xs font-semibold text-white/90 leading-relaxed uppercase tracking-wider">
+                  <span className="text-[#c5a059] font-bold">Galleria:</span> 77056, 77057
+                  <span className="text-white/20 px-2">|</span>
+                  <span className="text-[#c5a059] font-bold">Sugar Land:</span> 77478, 77479, 77096, 77098
+                  <span className="text-white/20 px-2">|</span>
+                  <span className="text-[#c5a059] font-bold">University:</span> 77030, 77025, 77005, 77401
+                </p>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Floating Action Bar (Call, Text, Email) overlapping page.tsx transition */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-[90%] max-w-4xl bg-white shadow-xl rounded-xl border border-black/5 py-4 px-6 z-20">
+        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-black/10 gap-4 text-center">
+          {/* Call Column */}
+          <a
+            href={`tel:${siteConfig.phone}`}
+            className="flex flex-row items-center justify-center gap-3 py-2 sm:py-0 hover:opacity-75 transition-opacity cursor-pointer text-ink"
+          >
+            <Phone className="size-5 text-[#c5a059] shrink-0" />
+            <div className="text-left">
+              <p className="text-[10px] font-bold tracking-widest text-slate uppercase leading-none mb-1">Call</p>
+              <p className="text-xs sm:text-sm font-semibold text-ink leading-tight">{siteConfig.phoneDisplay}</p>
+            </div>
+          </a>
+
+          {/* Text Column */}
+          <a
+            href={`sms:${siteConfig.phone}`}
+            className="flex flex-row items-center justify-center gap-3 py-2 sm:py-0 hover:opacity-75 transition-opacity cursor-pointer text-ink"
+          >
+            <MessageSquare className="size-5 text-[#c5a059] shrink-0" />
+            <div className="text-left">
+              <p className="text-[10px] font-bold tracking-widest text-slate uppercase leading-none mb-1">Text</p>
+              <p className="text-xs sm:text-sm font-semibold text-ink leading-tight">{siteConfig.phoneDisplay}</p>
+            </div>
+          </a>
+
+          {/* Email Column */}
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="flex flex-row items-center justify-center gap-3 py-2 sm:py-0 hover:opacity-75 transition-opacity cursor-pointer text-ink"
+          >
+            <Mail className="size-5 text-[#c5a059] shrink-0" />
+            <div className="text-left">
+              <p className="text-[10px] font-bold tracking-widest text-slate uppercase leading-none mb-1">Email</p>
+              <p className="text-xs sm:text-sm font-semibold text-ink leading-tight truncate max-w-[200px] sm:max-w-none">{siteConfig.email}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }

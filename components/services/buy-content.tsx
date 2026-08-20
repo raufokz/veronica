@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 const copy = {
   eyebrow: { en: "BUY A HOME", es: "COMPRA UNA CASA" },
-  h1: { en: "Buy a home in Clear Lake without the guesswork", es: "Compra una casa en Clear Lake sin adivinar" },
+  h1: { en: "Buy a home in Galleria & Sugar Land without the guesswork", es: "Compra una casa en Galleria y Sugar Land sin adivinar" },
   sub: {
     en: "Offers, inspections, financing — all explained before you sign anything. In English or in Spanish.",
     es: "Ofertas, inspecciones, financiamiento — todo explicado antes de firmar. En inglés o en español.",
@@ -36,7 +36,7 @@ const steps = [
   },
   {
     icon: Key,
-    title: { en: "Close with confidence", es: "Cierra con confianza" },
+    title: { en: "Close with confidence", es: "Cierre de confianza" },
     body: { en: "Inspection, appraisal, final walkthrough — I'm with you at every step until the keys are in your hand.", es: "Inspección, avalúo, recorrido final — te acompaño en cada paso hasta que las llaves estén en tu mano." },
   },
 ];
@@ -76,8 +76,8 @@ export function BuyContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
             <p className="eyebrow">{copy.eyebrow[lang]}</p>
-            <h1 className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[1.05]">{copy.h1[lang]}</h1>
-            <p className="mt-6 text-[1.0625rem] leading-[1.7] text-slate">{copy.sub[lang]}</p>
+            <h1 className="mt-4 h-display">{copy.h1[lang]}</h1>
+            <p className="mt-6 text-[1.0625rem] leading-[1.7] text-slate max-w-[58ch]">{copy.sub[lang]}</p>
             <div className="mt-8">
               <a
                 href={siteConfig.bookingUrl}

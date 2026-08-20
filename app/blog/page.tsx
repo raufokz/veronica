@@ -10,7 +10,7 @@ import type { BlogCategory } from "@/types/supabase";
 export const metadata: Metadata = {
   title: "Market Insights & Real Estate Blog",
   description:
-    "Tips, trends, and local market updates for Houston, Clear Lake and the Bay Area from Veronica Medellin, REALTOR®.",
+    "Tips, trends, and local market updates for Houston, Galleria, Sugar Land, and University areas from Veronica Medellin, REALTOR®.",
   alternates: { canonical: "/blog" },
 };
 

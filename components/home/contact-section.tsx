@@ -1,108 +1,155 @@
 "use client";
 
-import { CalendarClock } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
-import { dict, t } from "@/lib/dict";
 import { ContactForm } from "@/components/contact-form";
-import { FacebookIcon, InstagramIcon, PinterestIcon, YouTubeIcon } from "@/components/social-icons";
-import { buttonVariants } from "@/components/ui/button";
+import { Reveal } from "@/components/reveal";
 import { siteConfig } from "@/lib/site-config";
-import { AgentPhoto } from "@/components/agent-photo";
+import { Phone, Mail, MessageSquare } from "lucide-react";
+import Image from "next/image";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const bookCopy = {
-  heading: { en: "Prefer to pick a time yourself?", es: "¿Prefieres elegir tu propio horario?" },
-  cta: { en: "Book a call directly", es: "Agenda una llamada directamente" },
+type ContactSectionProps = {
+  sourcePage?: string;
+  headingLevel?: "h1" | "h2";
+  variant?: "default" | "luxury";
 };
 
-import { Reveal } from "@/components/reveal";
-
 export function ContactSection({
-  headingLevel: Heading = "h2",
   sourcePage = "/",
-}: {
-  headingLevel?: "h1" | "h2";
-  sourcePage?: string;
-} = {}) {
+  headingLevel: Heading = "h2",
+  variant = "luxury",
+}: ContactSectionProps) {
   const { lang } = useLanguage();
 
-  return (
-    <section id="contact" className="section-pad bg-white">
-      <div className="container-app grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <Reveal>
-          <div>
-            <p className="eyebrow">{t(dict.contact.eyebrow, lang)}</p>
-            <Heading className="mt-3 h-section">{t(dict.contact.h2, lang)}</Heading>
-            <ContactForm sourcePage={sourcePage} className="mt-8" />
-          </div>
-        </Reveal>
+  if (variant === "luxury") {
+    return (
+      <section id="contact" className="relative py-24 overflow-hidden bg-ink text-white">
+        {/* Background Image with Dark Contrast Backdrop */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/home_valuation_interior_luxury.png"
+            alt="Premium Interior Lounge"
+            fill
+            sizes="100vw"
+            className="object-cover object-center brightness-[0.35]"
+          />
+          <div className="absolute inset-0 bg-black/60 z-10" />
+        </div>
 
-        <Reveal delay={0.1}>
-          <div className="space-y-8">
-            <div className="flex items-center gap-4 p-4 rounded-xl border border-black/10 bg-sand/60">
-              <AgentPhoto variant="closeup" className="size-16 rounded-full border border-black/10 shrink-0" />
-              <div>
-                <p className="font-display font-semibold text-base text-ink">Veronica Medellin</p>
-              <p className="text-xs text-slate font-medium">Bilingual REALTOR® · Houston & Bay Area</p>
-              <p className="text-xs text-brand font-medium mt-0.5">TREC License #{siteConfig.trecLicense}</p>
+        <div className="container-app max-w-5xl px-4 md:px-8 relative z-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            {/* Left side: Premium credentials info content (5 cols) */}
+            <div className="lg:col-span-5 flex flex-col items-start text-left">
+              <Reveal>
+                <div className="inline-block bg-[#b4934c]/20 border border-[#c5a059]/40 text-[#c5a059] text-[10px] font-bold tracking-[0.25em] px-3.5 py-1.5 rounded-sm mb-6 uppercase">
+                  {lang === "es" ? "CONTACTO DIRECTO" : "EXECUTIVE GUIDANCE"}
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.05}>
+                <Heading className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight uppercase mb-6">
+                  {lang === "es" 
+                    ? "Hablemos sobre tus metas de bienes raíces" 
+                    : "Let's discuss your real estate goals"}
+                </Heading>
+              </Reveal>
+
+              <Reveal delay={0.1}>
+                <p className="text-xs sm:text-sm leading-relaxed text-white/80 font-medium mb-8 max-w-[40ch]">
+                  {lang === "es"
+                    ? "Asesoría bilingüe experta y directa sobre compra, venta e inversiones en las zonas más cotizadas de Houston."
+                    : "Expert, bi-lingual guidance tailored to buyers, sellers, and investors in Houston's premier neighborhoods."}
+                </p>
+              </Reveal>
+
+              {/* Direct Details */}
+              <Reveal delay={0.15} className="w-full">
+                <div className="space-y-4 border-t border-white/10 pt-6 w-full mb-8">
+                  <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-3.5 hover:text-[#c5a059] transition-colors group">
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-white/10 border border-white/5 group-hover:bg-[#c5a059]/20 transition-all text-[#c5a059]">
+                      <Phone className="size-4" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest leading-none mb-1">
+                        {lang === "es" ? "LLAMAR" : "DIRECT CALL"}
+                      </p>
+                      <p className="text-sm font-semibold">{siteConfig.phoneDisplay}</p>
+                    </div>
+                  </a>
+
+                  <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-3.5 hover:text-[#c5a059] transition-colors group">
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-white/10 border border-white/5 group-hover:bg-[#c5a059]/20 transition-all text-[#c5a059]">
+                      <Mail className="size-4" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest leading-none mb-1">
+                        {lang === "es" ? "CORREO" : "EMAIL ADDRESS"}
+                      </p>
+                      <p className="text-sm font-semibold truncate max-w-[240px] md:max-w-none">{siteConfig.email}</p>
+                    </div>
+                  </a>
+                </div>
+              </Reveal>
+
+              {/* Quick WhatsApp Action button */}
+              <Reveal delay={0.2} className="w-full">
+                <a
+                  href={siteConfig.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "w-full sm:w-auto rounded-none border-white/20 text-white bg-transparent hover:bg-[#b4934c] hover:border-[#b4934c] hover:text-white px-6 h-11 text-xs font-semibold uppercase tracking-widest transition-all inline-flex items-center justify-center gap-2.5 cursor-pointer"
+                  )}
+                >
+                  <MessageSquare className="size-4 text-[#c5a059]" />
+                  <span>{lang === "es" ? "Enviar mensaje por WhatsApp" : "Connect via WhatsApp"}</span>
+                </a>
+              </Reveal>
             </div>
-          </div>
 
-          <div className="rounded-xl border border-black/10 bg-sand p-5">
-            <div className="flex items-center gap-2 text-sm font-medium">
-              <CalendarClock className="size-4 text-brand" />
-              {bookCopy.heading[lang]}
+            {/* Right side: Translucent Glass Card Form (7 cols) */}
+            <div className="lg:col-span-7 w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl border border-white/20 text-ink">
+              <Reveal delay={0.1}>
+                <div>
+                  <div className="mb-6">
+                    <span className="text-[10px] font-bold tracking-[0.25em] text-[#c5a059] uppercase block mb-1">
+                      {lang === "es" ? "ENVÍA TU CONSULTA" : "SEND AN INQUIRY"}
+                    </span>
+                    <p className="text-xs text-slate font-medium">
+                      {lang === "es" 
+                        ? "Por favor, completa los siguientes datos para recibir una respuesta en un día hábil." 
+                        : "Fill out the form below to receive a response within one business day."}
+                    </p>
+                  </div>
+                  <ContactForm sourcePage={sourcePage} variant="minimalist" defaultInterest="other" className="space-y-5" />
+                </div>
+              </Reveal>
             </div>
-            <a
-              href={siteConfig.bookingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: "outline" }), "mt-3 rounded-full px-5 border-ink/20 bg-white")}
-            >
-              {bookCopy.cta[lang]}
-            </a>
-          </div>
 
-          <div className="space-y-1 text-sm lg:space-y-3">
-            <p>
-              <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-10 items-center font-medium hover:text-brand lg:min-h-0">
-                {siteConfig.phoneDisplay}
-              </a>
-            </p>
-            <p>
-              <a href={`mailto:${siteConfig.email}`} className="inline-flex min-h-10 items-center font-medium hover:text-brand lg:min-h-0">
-                {siteConfig.email}
-              </a>
-            </p>
-            <p className="text-slate">{siteConfig.brokerage}</p>
-            <p className="text-slate">TREC License #{siteConfig.trecLicense}</p>
-            <div className="flex gap-1 pt-2 lg:gap-2">
-              <a href={siteConfig.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
-                <FacebookIcon className="size-5" />
-              </a>
-              <a href={siteConfig.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
-                <InstagramIcon className="size-5" />
-              </a>
-              <a href={siteConfig.social.pinterest} target="_blank" rel="noopener noreferrer" aria-label="Pinterest" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
-                <PinterestIcon className="size-5" />
-              </a>
-              <a href={siteConfig.social.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="flex size-11 items-center justify-center rounded-full text-slate transition-colors hover:bg-sand hover:text-brand lg:size-9">
-                <YouTubeIcon className="size-5" />
-              </a>
-            </div>
-          </div>
-
-          <div className="overflow-hidden rounded-xl border border-black/10 aspect-video">
-            <iframe
-              title="Service area map — Clear Lake & Houston, TX"
-              src="https://www.google.com/maps?q=Clear+Lake,+Houston,+TX&output=embed"
-              className="h-full w-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
           </div>
         </div>
-      </Reveal>
+      </section>
+    );
+  }
+
+  // Standalone Default Flat Mode (for Standalone Route alternate variant)
+  return (
+    <section id="contact" className="py-20 bg-white">
+      <div className="container-app max-w-xl px-4 md:px-8 text-center">
+        <Reveal>
+          <Heading className="font-display text-2xl md:text-3xl font-bold tracking-widest text-[#222] uppercase mb-10">
+            {lang === "es" ? "Contáctanos" : "Get In Touch"}
+          </Heading>
+        </Reveal>
+
+        <Reveal delay={0.08}>
+          <div className="bg-[#faf9f6]/40 border border-black/5 p-8 rounded-3xl shadow-sm text-ink">
+            <ContactForm sourcePage={sourcePage} variant="minimalist" defaultInterest="other" />
+          </div>
+        </Reveal>
       </div>
     </section>
   );

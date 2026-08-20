@@ -16,8 +16,8 @@ const copy = {
   eyebrow: { en: "STAY IN THE LOOP", es: "MANTENTE AL TANTO" },
   heading: { en: "Get market updates in your inbox", es: "Recibe actualizaciones del mercado" },
   sub: {
-    en: "New listings, price trends, and buying/selling tips for Houston and Clear Lake — no spam.",
-    es: "Nuevas propiedades, tendencias de precios y consejos para comprar o vender — sin spam.",
+    en: "New listings, price trends, and buying/selling tips for Galleria, Sugar Land, and University areas — no spam.",
+    es: "Nuevas propiedades, tendencias de precios y consejos para comprar o vender en Galleria, Sugar Land y University Areas — sin spam.",
   },
   namePlaceholder: { en: "Your name", es: "Tu nombre" },
   emailPlaceholder: { en: "Your email", es: "Tu correo" },

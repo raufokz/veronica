@@ -4,7 +4,7 @@ import { NeighborhoodsIndexContent } from "@/components/neighborhoods/neighborho
 export const metadata: Metadata = {
   title: "Houston Area Neighborhoods",
   description:
-    "Explore Clear Lake, League City, and Friendswood real estate with a REALTOR® who knows the schools, commutes, and market in each one.",
+    "Explore Galleria, Sugar Land, and University Areas real estate with a REALTOR® who knows the schools, commutes, and market in each one.",
   alternates: { canonical: "/neighborhoods" },
 };
 

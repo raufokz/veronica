@@ -23,7 +23,7 @@ export function NeighborhoodsIndexContent() {
   return (
     <div className="container-app section-pad">
       <p className="eyebrow">{copy.eyebrow[lang]}</p>
-      <h1 className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[1.05] max-w-2xl">
+      <h1 className="mt-4 h-display max-w-2xl">
         {copy.h1[lang]}
       </h1>
 
@@ -32,7 +32,7 @@ export function NeighborhoodsIndexContent() {
           <Link
             key={n.slug}
             href={`/neighborhoods/${n.slug}`}
-            className="group block rounded-xl border border-black/10 bg-white overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_2px_12px_rgb(22_22_18_/_0.06)]"
+            className="group block rounded-xl border border-black/10 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-lg"
           >
             <div className="aspect-[4/3] bg-sand" />
             <div className="p-5">

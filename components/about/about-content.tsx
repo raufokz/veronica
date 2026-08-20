@@ -13,8 +13,8 @@ const copy = {
   eyebrow: { en: "VERONICA MEDELLIN, REALTOR®", es: "VERONICA MEDELLIN, REALTOR®" },
   h1: { en: "You've got the goal. I've got the map.", es: "Tú tienes la meta. Yo tengo el mapa." },
   intro: {
-    en: "I've been a Houston REALTOR® for over 10 years, working the Clear Lake and Bay Area corridor from Webster to Friendswood. I grew up around this market, and I've spent a decade learning it block by block — which streets flood, which schools are zoned where, which sellers are motivated and which are testing the water.",
-    es: "He sido REALTOR® en Houston por más de 10 años, trabajando en el corredor de Clear Lake y Bay Area desde Webster hasta Friendswood. Crecí cerca de este mercado, y he pasado una década aprendiéndolo cuadra por cuadra — qué calles se inundan, qué escuelas corresponden a qué zona, qué vendedores están motivados y cuáles solo están probando el agua.",
+    en: "I've been a Houston REALTOR® for over 10 years, working inside the Loop and key surrounding areas. I grew up around this market, and I've spent a decade learning it block by block — which streets flood, which schools are zoned where, which sellers are motivated and which are testing the water.",
+    es: "He sido REALTOR® en Houston por más de 10 años, trabajando dentro del Loop y en áreas clave circundantes. Crecí cerca de este mercado, y he pasado una década aprendiéndolo cuadra por cuadra — qué calles se inundan, qué escuelas corresponden a qué zona, qué vendedores están motivados y cuáles solo están probando el agua.",
   },
   body2: {
     en: "I work with first-time buyers who've never seen a closing disclosure, with sellers who've lived in the same house for twenty years and don't know where to start, and with investors who want the math before the tour. Whichever one you are, you get the same thing: a straight answer, in the language you're most comfortable in.",
@@ -28,7 +28,7 @@ const ticks = [
   { en: `Licensed Texas REALTOR® — TREC #${siteConfig.trecLicense}`, es: `REALTOR® con licencia en Texas — TREC #${siteConfig.trecLicense}` },
   { en: "Houston Association of REALTORS® member", es: "Miembro de la Asociación de REALTORES® de Houston" },
   { en: "Bilingual — English & Español", es: "Bilingüe — Inglés y Español" },
-  { en: "Houston, Clear Lake & Bay Area specialist", es: "Especialista en Houston, Clear Lake y Bay Area" },
+  { en: "Houston, Galleria & Sugar Land specialist", es: "Especialista en Houston, Galleria y Sugar Land" },
   { en: "10+ years, buyers · sellers · investors", es: "10+ años, compradores · vendedores · inversionistas" },
   { en: `Affiliated with ${siteConfig.brokerage}`, es: `Afiliada con ${siteConfig.brokerage}` },
 ];
@@ -42,7 +42,7 @@ const galleryItems = [
   {
     variant: "luxury" as const,
     title: { en: "Luxury Listings", es: "Propiedades de Lujo" },
-    subtitle: { en: "Houston & Clear Lake premium estates", es: "Residencias premium en Houston y Clear Lake" },
+    subtitle: { en: "Houston & Galleria premium estates", es: "Residencias premium en Houston y Galleria" },
   },
   {
     variant: "fireplace" as const,

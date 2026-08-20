@@ -51,10 +51,10 @@ const faqs: FaqItem[] = [
     },
   },
   {
-    q: { en: "How long does it take to sell a home in Clear Lake?", es: "¿Cuánto tiempo toma vender una casa en Clear Lake?" },
+    q: { en: "How long does it take to sell a home in Galleria & Sugar Land?", es: "¿Cuánto tiempo toma vender una casa en Galleria y Sugar Land?" },
     a: {
-      en: "It depends on price point and condition, but well-priced homes in Clear Lake typically go under contract within a few weeks. I'll give you a realistic timeline based on current comps when we meet.",
-      es: "Depende del precio y la condición, pero las casas bien valoradas en Clear Lake típicamente reciben una oferta en unas pocas semanas. Te daré un cronograma realista basado en comparables actuales cuando nos reunamos.",
+      en: "It depends on price point and condition, but well-priced homes in these areas typically go under contract within a few weeks. I'll give you a realistic timeline based on current comps when we meet.",
+      es: "Depende del precio y la condición, pero las casas bien valoradas en estas áreas típicamente reciben una oferta en unas pocas semanas. Te daré un cronograma realista basado en comparables actuales cuando nos reunamos.",
     },
   },
   {
@@ -77,8 +77,8 @@ export function SellContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
             <p className="eyebrow">{copy.eyebrow[lang]}</p>
-            <h1 className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[1.05]">{copy.h1[lang]}</h1>
-            <p className="mt-6 text-[1.0625rem] leading-[1.7] text-slate">{copy.sub[lang]}</p>
+            <h1 className="mt-4 h-display">{copy.h1[lang]}</h1>
+            <p className="mt-6 text-[1.0625rem] leading-[1.7] text-slate max-w-[58ch]">{copy.sub[lang]}</p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link href="/home-value" className={cn(buttonVariants({ size: "lg" }), "rounded-full bg-brand hover:bg-brand/90 text-white px-6")}>
                 {copy.cta1[lang]}

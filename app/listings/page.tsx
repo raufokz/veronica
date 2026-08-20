@@ -6,9 +6,9 @@ import { ListingsGrid } from "@/components/listings/listings-grid";
 import type { PropertyType, PropertyStatus } from "@/types/supabase";
 
 export const metadata: Metadata = {
-  title: "Houston & Clear Lake Listings",
+  title: "Houston Real Estate Listings",
   description:
-    "Browse current homes for sale in Houston, Clear Lake, League City and the Bay Area with Veronica Medellin, REALTOR®.",
+    "Browse current homes for sale in Galleria, Sugar Land, and University Area with Veronica Medellin, REALTOR®.",
   alternates: { canonical: "/listings" },
 };
 
@@ -42,7 +42,7 @@ export default async function ListingsPage({
 
   return (
     <div className="container-app section-pad">
-      <p className="eyebrow">HOUSTON · CLEAR LAKE · BAY AREA</p>
+      <p className="eyebrow">GALLERIA · SUGAR LAND · UNIVERSITY AREA</p>
       <h1 className="mt-3 h-display">Current Listings</h1>
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">

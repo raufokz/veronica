@@ -4,7 +4,7 @@ import { ServicesIndexContent } from "@/components/services/services-index-conte
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Buy, sell, or invest in Houston and Clear Lake real estate with Veronica Medellin, a bilingual REALTOR® with 10+ years of experience.",
+    "Buy, sell, or invest in Galleria, Sugar Land, and University areas with Veronica Medellin, a bilingual REALTOR® with 10+ years of experience.",
   alternates: { canonical: "/services" },
 };
 

@@ -27,9 +27,9 @@ const poppinsSans = Poppins({
   display: "swap",
 });
 
-const defaultTitle = "Veronica Medellin | Houston & Clear Lake REALTOR® | HomeSmart";
+const defaultTitle = "Veronica Medellin | Houston REALTOR® | HomeSmart";
 const defaultDescription =
-  "Bilingual Houston REALTOR® with 10+ years helping families buy, sell and invest in Clear Lake, League City and the Bay Area. Free home valuation. Se habla español.";
+  "Bilingual Houston REALTOR® helping families buy, sell and invest in Galleria, Sugar Land, and University areas. Free home valuation. Se habla español.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();

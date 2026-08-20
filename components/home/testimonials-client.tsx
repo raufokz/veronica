@@ -13,10 +13,9 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import type { Testimonial } from "@/types/supabase";
-
 import { Reveal } from "@/components/reveal";
 
-const AUTOPLAY_INTERVAL_MS = 5000;
+const AUTOPLAY_INTERVAL_MS = 6000;
 
 export function TestimonialsClient({ testimonials }: { testimonials: Testimonial[] }) {
   const { lang } = useLanguage();
@@ -36,51 +35,85 @@ export function TestimonialsClient({ testimonials }: { testimonials: Testimonial
   if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="bg-ink text-white section-pad">
-      <div className="container-app">
-        <Reveal>
-          <p className="eyebrow text-white/50">{t(dict.testimonials.eyebrow, lang)}</p>
-          <h2 className="mt-3 h-section text-white max-w-xl">
-            {t(dict.testimonials.h2, lang)}
-          </h2>
-        </Reveal>
+    <section id="testimonials" className="bg-[#161612] text-white py-20 border-b border-black/5">
+      <div className="container-app max-w-5xl px-4 md:px-8">
+        
+        {/* Split Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Heading and Rating Summary (4 Cols) */}
+          <div className="lg:col-span-4 flex flex-col items-start">
+            <Reveal>
+              <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-[#c5a059] uppercase mb-3">
+                {lang === "es" ? "LO QUE DICEN LOS CLIENTES" : "WHAT CLIENTS SAY"}
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white uppercase leading-snug mb-6">
+                {lang === "es" ? "Historias reales de clientes reales." : "Real stories from real clients."}
+              </h2>
+            </Reveal>
 
-        <Reveal delay={0.1}>
-          <Carousel
-            className="mt-8 w-full max-w-3xl"
-            opts={{ loop: true }}
-            setApi={setApi}
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-          >
-            <CarouselContent>
-              {testimonials.map((testimonial) => (
-                <CarouselItem key={testimonial.id}>
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-8">
-                    <div className="flex gap-1">
-                      {Array.from({ length: testimonial.rating ?? 5 }).map((_, i) => (
-                        <Star key={i} className="size-4 fill-gold text-gold" />
-                      ))}
-                    </div>
-                    <p className="mt-4 text-lg leading-relaxed text-white/90">&ldquo;{testimonial.content}&rdquo;</p>
-                    <p className="mt-4 text-sm text-white/50">
-                      {testimonial.client_name}
-                      {testimonial.transaction_type ? ` · ${testimonial.transaction_type}` : ""}
-                    </p>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="mt-6 flex gap-3">
-              <CarouselPrevious className="static translate-y-0 bg-transparent border-white/20 text-white hover:bg-white/10" />
-              <CarouselNext className="static translate-y-0 bg-transparent border-white/20 text-white hover:bg-white/10" />
-            </div>
-          </Carousel>
-        </Reveal>
+            {/* Stars Summary */}
+            <Reveal delay={0.05}>
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="size-4.5 fill-[#c5a059] text-[#c5a059]" />
+                  ))}
+                </div>
+                <p className="text-xs sm:text-sm font-semibold tracking-wider text-white/70 uppercase">
+                  {lang === "es" ? "Calificación promedio de 5.0" : "5.0 average rating"}
+                </p>
+              </div>
+            </Reveal>
+          </div>
 
-        <Reveal delay={0.15}>
-          <p className="mt-6 text-sm text-white/50">{t(dict.testimonials.readMore, lang)}</p>
-        </Reveal>
+          {/* Right Column: Cards Carousel (8 Cols) */}
+          <div className="lg:col-span-8 w-full">
+            <Reveal delay={0.1}>
+              <Carousel
+                className="w-full"
+                opts={{ loop: true, align: "start" }}
+                setApi={setApi}
+                onMouseEnter={() => setPaused(true)}
+                onMouseLeave={() => setPaused(false)}
+              >
+                <CarouselContent className="-ml-4">
+                  {testimonials.map((testimonial) => (
+                    <CarouselItem key={testimonial.id} className="pl-4 basis-full sm:basis-1/2">
+                      <div className="h-full rounded-2xl bg-white p-6 sm:p-8 flex flex-col justify-between text-ink border border-black/5 shadow-md">
+                        <div>
+                          {/* 5 Stars */}
+                          <div className="flex gap-1 mb-4">
+                            {Array.from({ length: testimonial.rating ?? 5 }).map((_, i) => (
+                              <Star key={i} className="size-3.5 fill-[#c5a059] text-[#c5a059]" />
+                            ))}
+                          </div>
+                          {/* Content */}
+                          <p className="text-xs sm:text-sm leading-relaxed text-ink/90 font-medium italic">
+                            &ldquo;{testimonial.content}&rdquo;
+                          </p>
+                        </div>
+                        {/* Author */}
+                        <p className="mt-5 text-xs font-bold text-slate uppercase tracking-wider border-t border-black/5 pt-3.5">
+                          {testimonial.client_name}
+                          {testimonial.transaction_type ? ` · ${testimonial.transaction_type}` : ""}
+                        </p>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                
+                {/* Carousel Controls */}
+                <div className="mt-8 flex gap-3 justify-end">
+                  <CarouselPrevious className="static translate-y-0 h-9 w-9 bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" />
+                  <CarouselNext className="static translate-y-0 h-9 w-9 bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white" />
+                </div>
+              </Carousel>
+            </Reveal>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );

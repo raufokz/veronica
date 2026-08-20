@@ -30,13 +30,13 @@ export function EsLandingContent() {
       <section className="container-app pt-16 pb-20 md:pt-24 md:pb-28">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
-            <p className="eyebrow">HOUSTON · CLEAR LAKE · BAY AREA</p>
-            <h1 className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[1.05] max-w-2xl">
+            <p className="eyebrow">GALLERIA · SUGAR LAND · UNIVERSITY AREA</p>
+            <h1 className="mt-4 h-display max-w-2xl">
               La REALTOR® de Houston que habla tu idioma — literalmente.
             </h1>
-            <p className="mt-6 max-w-xl text-[1.0625rem] leading-[1.7] text-slate">
+            <p className="mt-6 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-slate">
               Soy Veronica Medellin, agente bilingüe con más de 10 años ayudando a familias
-              hispanas en Houston y Clear Lake a comprar, vender e invertir en bienes raíces —
+              hispanas en Galleria, Sugar Land y University Areas a comprar, vender e invertir en bienes raíces —
               sin traducciones a medias ni sorpresas en el contrato.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
@@ -73,7 +73,7 @@ export function EsLandingContent() {
       <section className="bg-sand section-pad">
         <div className="container-app">
           <p className="eyebrow">CÓMO AYUDO</p>
-          <h2 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold max-w-xl">
+          <h2 className="mt-3 h-section max-w-xl">
             Sea cual sea tu meta, hay un plan para lograrla
           </h2>
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -92,7 +92,7 @@ export function EsLandingContent() {
         <div className="container-app grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <p className="eyebrow">HABLEMOS</p>
-            <h2 className="mt-3 text-[clamp(2rem,3.5vw,3rem)] font-semibold">
+            <h2 className="mt-3 h-section">
               Cuéntame qué quieres lograr. Yo te digo cómo llegar.
             </h2>
             <ContactForm sourcePage="/es" className="mt-8" />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, Phone } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -30,10 +31,12 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const { lang, toggle } = useLanguage();
+  const pathname = usePathname();
+  const isHome = pathname === "/" || pathname === "/es";
 
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 20);
     }
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -43,13 +46,17 @@ export function Nav() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-[background-color,border-color] duration-200",
-        scrolled
-          ? "bg-white/92 backdrop-blur-md border-b border-black/[.06]"
-          : "bg-transparent border-b border-transparent"
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        isHome
+          ? scrolled
+            ? "bg-white/95 backdrop-blur-md border-b border-[#c5a059]/20 shadow-sm"
+            : "bg-transparent border-b border-transparent"
+          : scrolled
+            ? "bg-white/95 backdrop-blur-md border-b border-[#c5a059]/20 shadow-sm"
+            : "bg-white border-b border-black/5"
       )}
     >
-      <div className="container-app flex h-20 items-center justify-between">
+      <div className={cn("container-app flex items-center justify-between transition-all duration-300", scrolled ? "h-16" : "h-20")}>
         <Link href="/" className="flex items-center gap-3 font-display text-xl font-semibold text-ink group">
           <AgentPhoto variant="headshot" className="size-9 rounded-full border border-black/10 transition-transform group-hover:scale-105" />
           <div className="flex flex-col leading-tight">

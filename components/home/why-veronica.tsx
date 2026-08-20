@@ -1,63 +1,100 @@
 "use client";
 
-import {
-  MapPin,
-  Handshake,
-  UserCheck,
-  Megaphone,
-  LineChart,
-  GraduationCap,
-  Landmark,
-  MessageCircle,
-  Languages,
-  Target,
-} from "lucide-react";
+import { MapPin, UserCheck, TrendingUp, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 import { Reveal } from "@/components/reveal";
 
-const eyebrow = { en: "WHY WORK WITH VERONICA", es: "POR QUÉ TRABAJAR CON VERONICA" };
-const heading = { en: "Ten reasons clients choose her", es: "Diez razones por las que los clientes la eligen" };
-
-const items = [
-  { icon: MapPin, en: "Local market knowledge", es: "Conocimiento del mercado local" },
-  { icon: Handshake, en: "Sharp negotiation", es: "Negociación aguda" },
-  { icon: UserCheck, en: "Personalised service", es: "Servicio personalizado" },
-  { icon: Megaphone, en: "Modern marketing", es: "Marketing moderno" },
-  { icon: LineChart, en: "Investment insight", es: "Visión de inversión" },
-  { icon: GraduationCap, en: "Continuing education", es: "Educación continua" },
-  { icon: Landmark, en: "Community roots", es: "Raíces en la comunidad" },
-  { icon: MessageCircle, en: "Clear communication", es: "Comunicación clara" },
-  { icon: Languages, en: "Bilingual service", es: "Servicio bilingüe" },
-  { icon: Target, en: "Client-first focus", es: "Enfoque en el cliente" },
-];
+const content = {
+  eyebrow: {
+    en: "WHY WORK WITH ME?",
+    es: "¿POR QUÉ TRABAJAR CONMIGO?",
+  },
+  heading: {
+    en: "Local expertise. Personal service. Results that move you forward.",
+    es: "Experiencia local. Servicio personalizado. Resultados que te impulsan.",
+  },
+  cards: [
+    {
+      icon: MapPin,
+      title: { en: "Local Expertise", es: "Experiencia Local" },
+      description: {
+        en: "Deep knowledge of Houston and Sugar Land neighborhoods and market trends.",
+        es: "Conocimiento profundo de los vecindarios y tendencias del mercado de Houston y Sugar Land.",
+      },
+    },
+    {
+      icon: UserCheck,
+      title: { en: "Personalized Service", es: "Servicio Personalizado" },
+      description: {
+        en: "I listen, guide and negotiate for your best outcome.",
+        es: "Escucho, guío y negocio para lograr el mejor acuerdo para ti.",
+      },
+    },
+    {
+      icon: TrendingUp,
+      title: { en: "Proven Results", es: "Resultados Probados" },
+      description: {
+        en: "Skilled marketing and styling negotiate for the maximum value.",
+        es: "Marketing hábil y decoración para negociar por el máximo valor.",
+      },
+    },
+    {
+      icon: Heart,
+      title: { en: "Always Available", es: "Siempre Disponible" },
+      description: {
+        en: "I'm here when you need me, before, during and after your transaction.",
+        es: "Estoy aquí cuando me necesitas, antes, durante y después de la transacción.",
+      },
+    },
+  ],
+};
 
 export function WhyVeronica() {
   const { lang } = useLanguage();
 
   return (
-    <section className="section-pad bg-white">
-      <div className="container-app">
-        <Reveal>
-          <p className="eyebrow">{lang === "es" ? eyebrow.es : eyebrow.en}</p>
-          <h2 className="mt-3 max-w-xl text-balance h-section">
-            {lang === "es" ? heading.es : heading.en}
-          </h2>
-        </Reveal>
-
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-          {items.map((item, i) => (
-            <Reveal key={item.en} delay={i * 0.05}>
-            <div className="group flex flex-col items-start gap-3">
-              <span className="flex size-10 items-center justify-center rounded-lg bg-brand text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
-                <item.icon className="size-5" />
-              </span>
-              <span className="text-sm font-medium text-ink leading-snug">
-                {lang === "es" ? item.es : item.en}
-              </span>
-            </div>
-            </Reveal>
-          ))}
+    <section className="py-20 bg-white border-b border-black/5" id="why-work-with-me">
+      <div className="container-app max-w-5xl px-4 md:px-8">
+        
+        {/* Title Block */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <Reveal>
+            <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-[#c5a059] uppercase mb-3">
+              {lang === "es" ? content.eyebrow.es : content.eyebrow.en}
+            </p>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-ink uppercase leading-tight">
+              {lang === "es" ? content.heading.es : content.heading.en}
+            </h2>
+          </Reveal>
         </div>
+
+        {/* 4 Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {content.cards.map((card, i) => {
+            const Icon = card.icon;
+            return (
+              <Reveal key={i} delay={i * 0.05}>
+                <div className="flex flex-col items-center text-center group">
+                  {/* Circular Gold Icon Badge */}
+                  <div className="flex size-14 items-center justify-center rounded-full border border-[#c5a059]/40 bg-[#fefdfa] text-[#c5a059] transition-transform duration-300 group-hover:scale-105 mb-5 shadow-sm">
+                    <Icon className="size-6" />
+                  </div>
+
+                  {/* Card Title */}
+                  <h3 className="font-display text-base font-bold text-ink uppercase tracking-wider mb-2.5">
+                    {lang === "es" ? card.title.es : card.title.en}
+                  </h3>
+
+                  {/* Card Description */}
+                  <p className="text-xs sm:text-sm leading-relaxed text-slate font-medium max-w-[28ch]">
+                    {lang === "es" ? card.description.es : card.description.en}
+                  </p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+
       </div>
     </section>
   );

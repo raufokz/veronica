@@ -15,7 +15,7 @@ const copy = {
   medianPrice: { en: "Median price", es: "Precio medio" },
   schools: { en: "Schools", es: "Escuelas" },
   commute: { en: "Commute times", es: "Tiempos de traslado" },
-  nasa: { en: "NASA / Clear Lake", es: "NASA / Clear Lake" },
+  nasa: { en: "Galleria / Uptown", es: "Galleria / Uptown" },
   downtown: { en: "Downtown Houston", es: "Centro de Houston" },
   medicalCenter: { en: "Texas Medical Center", es: "Texas Medical Center" },
   listingsHeading: { en: "Homes for sale here now", es: "Casas en venta ahora mismo" },
@@ -66,7 +66,7 @@ export function NeighborhoodDetailContent({
       <div className="bg-sand">
         <div className="container-app section-pad">
           <p className="eyebrow">{copy.eyebrow[lang]}</p>
-          <h1 className="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-semibold leading-[1.05] max-w-2xl">
+          <h1 className="mt-4 h-display max-w-2xl">
             {neighborhood.name}
           </h1>
           <p className="mt-2 text-lg text-slate">{neighborhood.headline[lang]}</p>

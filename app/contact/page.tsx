@@ -4,7 +4,7 @@ import { ContactSection } from "@/components/home/contact-section";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Veronica Medellin, a bilingual Houston REALTOR® serving Clear Lake, League City and the Bay Area.",
+    "Get in touch with Veronica Medellin, a bilingual Houston REALTOR® serving Galleria, Sugar Land, and the University Area.",
   alternates: { canonical: "/contact" },
 };
 

@@ -27,6 +27,7 @@ type ContactFormProps = {
   defaultInterest?: LeadInput["interest_type"];
   submitLabel?: string;
   className?: string;
+  variant?: "default" | "minimalist";
 };
 
 export function ContactForm({
@@ -35,9 +36,11 @@ export function ContactForm({
   defaultInterest = "buying",
   submitLabel,
   className,
+  variant = "default",
 }: ContactFormProps) {
   const { lang } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
+  const [consent, setConsent] = useState(false);
 
   const {
     register,
@@ -76,6 +79,96 @@ export function ContactForm({
       <div className={cn("rounded-xl border border-black/10 bg-sand p-8 text-center", className)}>
         <p className="font-display text-xl">{t(dict.contact.success, lang)}</p>
       </div>
+    );
+  }
+
+  if (variant === "minimalist") {
+    return (
+      <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-6 max-w-xl mx-auto", className)} noValidate>
+        {/* Honeypot */}
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="website">Website</label>
+          <input id="website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+        </div>
+
+        <div className="space-y-1.5 text-left">
+          <Label htmlFor="full_name" className="text-sm font-semibold uppercase tracking-wider text-[#222]">
+            {lang === "es" ? "Nombre Completo" : "Full Name"}
+          </Label>
+          <input
+            id="full_name"
+            placeholder={lang === "es" ? "Ingresa tu nombre completo" : "Enter your name"}
+            className={cn(
+              "block w-full border-b border-black/20 focus:border-black bg-transparent outline-none py-2 text-sm transition-colors rounded-none border-x-0 border-t-0 placeholder:text-black/35",
+              errors.full_name && "border-red-500"
+            )}
+            {...register("full_name")}
+            aria-invalid={!!errors.full_name}
+          />
+          {errors.full_name && <p className="text-xs text-red-500 mt-1">{errors.full_name.message}</p>}
+        </div>
+
+        <div className="space-y-1.5 text-left">
+          <Label htmlFor="email" className="text-sm font-semibold uppercase tracking-wider text-[#222]">
+            {lang === "es" ? "Correo Electrónico" : "Email"}
+          </Label>
+          <input
+            id="email"
+            type="email"
+            placeholder={lang === "es" ? "Ingresa tu correo electrónico" : "Enter a valid email address"}
+            className={cn(
+              "block w-full border-b border-black/20 focus:border-black bg-transparent outline-none py-2 text-sm transition-colors rounded-none border-x-0 border-t-0 placeholder:text-black/35",
+              errors.email && "border-red-500"
+            )}
+            {...register("email")}
+            aria-invalid={!!errors.email}
+          />
+          {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
+        </div>
+
+        <div className="space-y-1.5 text-left">
+          <Label htmlFor="phone" className="text-sm font-semibold uppercase tracking-wider text-[#222]">
+            {lang === "es" ? "Número de Teléfono" : "Phone Number"}
+          </Label>
+          <input
+            id="phone"
+            type="tel"
+            placeholder={lang === "es" ? "Ingresa tu número de teléfono" : "Enter your phone number"}
+            className="block w-full border-b border-black/20 focus:border-black bg-transparent outline-none py-2 text-sm transition-colors rounded-none border-x-0 border-t-0 placeholder:text-black/35"
+            {...register("phone")}
+          />
+        </div>
+
+        {/* Consent Checkbox */}
+        <div className="flex items-start gap-3 text-left mt-2">
+          <input
+            id="consent_checkbox"
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-1 flex-shrink-0 accent-[#2a2a2a] size-4 rounded border-black/20 cursor-pointer"
+          />
+          <Label htmlFor="consent_checkbox" className="text-xs text-slate/85 font-medium leading-relaxed cursor-pointer select-none">
+            {lang === "es"
+              ? "Doy mi consentimiento para recibir correos electrónicos automatizados con actualizaciones, promociones y notificaciones sobre oportunidades inmobiliarias. Reconozco que puedo optar por no participar en cualquier momento."
+              : "I consent to receive automated emails with updates, promotions, and notifications about real estate opportunities. I acknowledge that I can opt out at any time."
+            }
+          </Label>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <button
+            type="submit"
+            disabled={isSubmitting || !consent}
+            className={cn(
+              buttonVariants(),
+              "rounded-none bg-[#2a2a2a] hover:bg-[#1a1a1a] text-white py-2 px-8 h-auto cursor-pointer font-display text-xs font-semibold uppercase tracking-wider transition-all disabled:opacity-40"
+            )}
+          >
+            {isSubmitting ? "…" : submitLabel ?? (lang === "es" ? "Enviar" : "Submit")}
+          </button>
+        </div>
+      </form>
     );
   }
 

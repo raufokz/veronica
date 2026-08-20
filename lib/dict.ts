@@ -14,16 +14,16 @@ export const dict = {
   },
   hero: {
     eyebrow: {
-      en: "HOUSTON · SUGAR LAND · GALLERIA · BAY AREA",
-      es: "HOUSTON · SUGAR LAND · GALLERIA · BAY AREA",
+      en: "HOUSTON · SUGAR LAND · GALLERIA · UNIVERSITY",
+      es: "HOUSTON · SUGAR LAND · GALLERIA · UNIVERSITY",
     },
     h1: {
-      en: "Houston and Sugar Land real estate, guided start to finish",
-      es: "Bienes raíces en Houston y Sugar Land, guiados de principio a fin",
+      en: "Houston and Sugar Land Real Estate, Guided Start to Finish.",
+      es: "Bienes raíces en Houston y Sugar Land, guiados de principio a fin.",
     },
     sub: {
-      en: "I'm Veronica Medellin, a bilingual REALTOR® with 10+ years helping buyers, sellers and investors across Sugar Land, the Galleria and the Bay Area. Honest advice and a clear next step, every time.",
-      es: "Soy Veronica Medellin, una REALTOR® bilingüe con más de 10 años ayudando a compradores, vendedores e inversionistas en Sugar Land, Galleria y Bay Area. Asesoría honesta y un siguiente paso claro, siempre.",
+      en: "I'm Veronica Medellin, a bilingual REALTOR® with 10+ years helping buyers, sellers and investors across Sugar Land, the Galleria and the University area. Let's make your next move your best one yet.",
+      es: "Soy Veronica Medellin, una REALTOR® bilingüe con más de 10 años ayudando a compradores, vendedores e inversionistas en Sugar Land, Galleria y el área de University. Hagamos de tu próximo paso el mejor hasta ahora.",
     },
     cta1: { en: "Book a free consultation", es: "Agenda una consulta gratis" },
     cta2: { en: "See what my home is worth", es: "Descubre el valor de mi casa" },
@@ -35,12 +35,10 @@ export const dict = {
       es: "HomeSmart · TREC #0614869 · Miembro HAR · Igualdad de Oportunidad de Vivienda",
     },
     zipCodesTitle: { en: "Areas I cover", es: "Áreas que cubro" },
-    // 77402 is a PO-box-only ZIP assigned to Sugar Land, so it is grouped there
-    // rather than shown as an area buyers can browse listings in.
     zips: [
-      { name: "Sugar Land", zip: "77479 · 77498 · 77402" },
-      { name: "Galleria / Uptown", zip: "77056" },
-      { name: "Clear Lake & Bay Area", zip: "77058" },
+      { name: "Sugar Land", zip: "77478 · 77479 · 77096 · 77098" },
+      { name: "Galleria / Uptown", zip: "77057 · 77056" },
+      { name: "University", zip: "77030 · 77005 · 77025 · 77401" },
     ],
   },
   homeValue: {
@@ -67,15 +65,15 @@ export const dict = {
   services: {
     eyebrow: { en: "HOW I HELP", es: "CÓMO AYUDO" },
     h2: { en: "Whatever the goal, there's a plan for it", es: "Sea cual sea la meta, hay un plan para lograrla" },
-    buying: { title: { en: "Buying a home", es: "Comprar una casa" }, copy: { en: "From the first Saturday of showings to the day you get the keys — offers, inspections, financing, all of it explained before you sign it.", es: "Desde el primer sábado de recorridos hasta el día que recibes las llaves — ofertas, inspecciones, financiamiento, todo explicado antes de firmar." } },
-    selling: { title: { en: "Selling a home", es: "Vender una casa" }, copy: { en: "Pricing backed by real comps, photography that makes people stop scrolling, and negotiation that protects your number.", es: "Precios respaldados por comparables reales, fotografía que detiene el scroll, y negociación que protege tu número." } },
-    investing: { title: { en: "Investing", es: "Invertir" }, copy: { en: "Rental math, neighbourhood trajectory, and honest answers about which properties aren't worth your capital.", es: "Números de renta, la trayectoria del vecindario, y respuestas honestas sobre qué propiedades no valen tu capital." } },
-    guidance: { title: { en: "One-on-one guidance", es: "Asesoría personalizada" }, copy: { en: "A strategy built around your timeline and your budget — not a template.", es: "Una estrategia construida en torno a tu tiempo y tu presupuesto — no una plantilla." } },
+    buying: { title: { en: "Buying a Home", es: "Comprar una casa" }, copy: { en: "From the first Saturday of showings to the day you get the keys — offers, inspections, financing, all of it explained before you sign.", es: "Desde el primer sábado de recorridos hasta el día que recibes las llaves — ofertas, inspecciones, financiamiento, todo explicado antes de firmar." } },
+    selling: { title: { en: "Selling a Home", es: "Vender una casa" }, copy: { en: "Pricing backed by real comps, pre-staging tips that make people stop scrolling, and negotiation that protects your number.", es: "Precios respaldados por comparables reales, consejos de pre-decoración que hacen detener el scroll, y negociación que protege tu número." } },
+    investing: { title: { en: "Investing", es: "Invertir" }, copy: { en: "Rental math, neighborhood hotspots, and transaction flow — the type of focus that lets you decide with confidence.", es: "Números de renta, zonas candentes del vecindario, y flujo de transacciones — el enfoque que te permite decidir con confianza." } },
+    guidance: { title: { en: "One-on-One Guidance", es: "Asesoría personalizada" }, copy: { en: "Real strategy built around your timeline and your budget — not a template.", es: "Una estrategia real construida en torno a tu tiempo y tu presupuesto — no una plantilla." } },
     process: {
-      step1: { title: { en: "Consultation", es: "Consulta" }, copy: { en: "A free call to map your goals, budget, and timeline.", es: "Una llamada gratuita para definir metas, presupuesto y tiempos." } },
-      step2: { title: { en: "Search or list", es: "Buscar o listar" }, copy: { en: "Curated showings, or pricing and marketing your home to sell.", es: "Recorridos seleccionados, o precio y marketing para vender tu casa." } },
-      step3: { title: { en: "Negotiate", es: "Negociar" }, copy: { en: "Offers, inspections, and terms handled in your best interest.", es: "Ofertas, inspecciones y términos manejados en tu mejor interés." } },
-      step4: { title: { en: "Close", es: "Cerrar" }, copy: { en: "Paperwork explained plainly, keys in your hand.", es: "Papeleo explicado con claridad, llaves en tu mano." } },
+      step1: { title: { en: "Consultation", es: "Consulta" }, copy: { en: "A honest chat on your goals, budget and timeline.", es: "Una charla honesta sobre tus metas, presupuesto y tiempos." } },
+      step2: { title: { en: "Search or List", es: "Buscar o listar" }, copy: { en: "Curated showings or pricing and marketing your home to sell.", es: "Recorridos seleccionados o precio y marketing para vender tu casa." } },
+      step3: { title: { en: "Negotiate", es: "Negociar" }, copy: { en: "Offers, inspections, and items handled in your best interest.", es: "Ofertas, inspecciones y temas manejados en tu mejor interés." } },
+      step4: { title: { en: "Close", es: "Cerrar" }, copy: { en: "Paperwork explained clearly, keys in your hands and done.", es: "Papeleo explicado claramente, llaves en tus manos y listo." } },
     },
   },
   testimonials: {
@@ -108,8 +106,8 @@ export const dict = {
   },
   footer: {
     positioning: {
-      en: "Bilingual Houston REALTOR® serving Clear Lake & the Bay Area.",
-      es: "REALTOR® bilingüe en Houston, sirviendo Clear Lake y el Bay Area.",
+      en: "Bilingual Houston REALTOR® serving Galleria, Sugar Land & University area.",
+      es: "REALTOR® bilingüe en Houston, sirviendo Galleria, Sugar Land y el área de University.",
     },
     quickLinks: { en: "Quick Links", es: "Enlaces Rápidos" },
     serviceAreas: { en: "Service Areas", es: "Áreas de Servicio" },
@@ -138,8 +136,8 @@ export const dict = {
     cta: { en: "See homes in these areas", es: "Ver casas en estas áreas" },
     groups: [
       {
-        name: { en: "Sugar Land & Stafford", es: "Sugar Land y Stafford" },
-        zips: "77479 · 77498 · 77402",
+        name: { en: "Sugar Land", es: "Sugar Land" },
+        zips: "77478 · 77479 · 77096 · 77098",
         blurb: {
           en: "Master-planned communities, strong schools, and steady resale demand from families moving in from across Houston.",
           es: "Comunidades planificadas, buenas escuelas y demanda constante de reventa de familias que llegan de todo Houston.",
@@ -147,18 +145,18 @@ export const dict = {
       },
       {
         name: { en: "Galleria & Uptown", es: "Galleria y Uptown" },
-        zips: "77056",
+        zips: "77057 · 77056",
         blurb: {
           en: "High-rise condos and townhomes for buyers who want to walk to work, dining and shopping inside the Loop.",
           es: "Condominios en torre y townhomes para quienes quieren caminar al trabajo, restaurantes y tiendas dentro del Loop.",
         },
       },
       {
-        name: { en: "Clear Lake & the Bay Area", es: "Clear Lake y el Bay Area" },
-        zips: "77058 · 77598",
+        name: { en: "University Area", es: "Área de University" },
+        zips: "77030 · 77005 · 77025 · 77401",
         blurb: {
-          en: "Waterfront access, NASA and refinery commutes, and a wide price range from first homes to move-up buys.",
-          es: "Acceso al agua, traslados a NASA y refinerías, y un rango amplio de precios desde primeras casas hasta mudanzas mayores.",
+          en: "Affluent residential pockets, tree-lined streets, and top-tier medical and educational proximity inside the Loop.",
+          es: "Áreas residenciales exclusivas, calles arboladas y cercanía de primer nivel a centros médicos y educativos dentro del Loop.",
         },
       },
     ],
@@ -171,8 +169,8 @@ export const dict = {
           es: "¿Qué áreas de Houston cubres?",
         },
         a: {
-          en: "I work across Sugar Land and Stafford (77479, 77498, 77402), the Galleria and Uptown (77056), and Clear Lake and the wider Bay Area, along with nearby communities such as League City, Friendswood, Pearland and Webster. If your address is outside those areas, call me anyway — I will tell you honestly whether I am the right agent or refer you to someone who is.",
-          es: "Trabajo en Sugar Land y Stafford (77479, 77498, 77402), Galleria y Uptown (77056), y Clear Lake y el Bay Area, además de comunidades cercanas como League City, Friendswood, Pearland y Webster. Si tu dirección está fuera de esas áreas, llámame igual — te diré con honestidad si soy la agente adecuada o te referiré a alguien que lo sea.",
+          en: "I work across Sugar Land (77478, 77479, 77096, 77098), the Galleria and Uptown (77057, 77056), and the University area (77030, 77005, 77025, 77401). If your address is outside those areas, call me anyway — I will tell you honestly whether I am the right agent or refer you to someone who is.",
+          es: "Trabajo en Sugar Land (77478, 77479, 77096, 77098), Galleria y Uptown (77057, 77056), y el área de University (77030, 77005, 77025, 77401). Si tu dirección está fuera de esas áreas, llámame igual — te diré con honestidad si soy la agente adecuada o te referiré a alguien que lo sea.",
         },
       },
       {

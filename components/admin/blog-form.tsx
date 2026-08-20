@@ -181,7 +181,7 @@ export function BlogForm({ post }: { post?: BlogPost | null }) {
 
       <div className="grid grid-cols-2 gap-4">
         <Field label="Tags (comma separated)">
-          <Input {...register("tags")} placeholder="mortgage rates, Clear Lake" />
+          <Input {...register("tags")} placeholder="mortgage rates, Sugar Land" />
         </Field>
         <Field label="Author">
           <Input {...register("author")} />
