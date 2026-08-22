@@ -1,4 +1,4 @@
-﻿-- =========================================================
+-- =========================================================
 -- Ensure blog_posts table exists, then seed 10 blog posts
 -- =========================================================
 
@@ -187,8 +187,7 @@ values
   'Discover Clear Lake TX - schools, housing, things to do, and why buyers love this Houston-area neighborhood.',
   'Clear Lake TX Neighborhood Guide | Living in Clear Lake',
   array['clear lake','houston neighborhoods','clear creek isd','nasa','community guide']
-);
-
+)
 on conflict (slug) do nothing;
 
 -- Publish existing draft posts too if any
