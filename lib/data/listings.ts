@@ -97,3 +97,16 @@ export async function getAllListingSlugs(): Promise<string[]> {
   if (error) return [];
   return (data ?? []).map((row) => row.slug);
 }
+
+export async function getAllListingsForSitemap(): Promise<
+  { slug: string; updated_at: string }[]
+> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createStaticClient();
+  const { data, error } = await supabase
+    .from("properties")
+    .select("slug, updated_at")
+    .eq("published", true);
+  if (error) return [];
+  return data ?? [];
+}

@@ -63,6 +63,7 @@ export async function generateMetadata(): Promise<Metadata> {
       shortcut: "/favicon.ico",
       apple: "/favicon.ico",
     },
+    manifest: "/site.webmanifest",
     twitter: { card: "summary_large_image" },
     verification: {
       google: "EmS_WrrO_jliQ27YWFO17ouicPmWOnFOPd6lmg1uXTs",

@@ -13,7 +13,7 @@ export default function PrivacyPage() {
     <LegalLayout title="Privacy Policy">
       <p>
         This policy explains what information {siteConfig.name} collects through this website
-        and how it&apos;s used. Last updated: 2026.
+        and how it&apos;s used. Last updated: August 22, 2026.
       </p>
 
       <h2>Information we collect</h2>
@@ -33,9 +33,14 @@ export default function PrivacyPage() {
 
 <h2>Analytics</h2>
 <p>
-  This site does not currently use analytics tools or advertising pixels. If such tools
-  are added in the future, this policy will be updated to reflect that, and a cookie notice
-  will be shown.
+  This site uses Google Analytics (GA4) and Microsoft Clarity to understand how visitors
+  use the site — for example, which pages are viewed and how visitors navigate — so we can
+  improve content and user experience. These tools use cookies and similar technologies but
+  do not collect your name, email, or phone number unless you submit one of our forms. They
+  do not sell your data. You can opt out of Google Analytics using the{" "}
+  <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">
+    Google Analytics Opt-out Browser Add-on
+  </a>.
 </p>
 
       <h2>Data storage</h2>

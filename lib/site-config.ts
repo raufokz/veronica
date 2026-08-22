@@ -10,7 +10,7 @@ export const siteConfig = {
   bookingUrl:
     "https://outlook.office365.com/owa/calendar/Bookacall@NETORGFT20924878.onmicrosoft.com/bookings/",
   trecLicense: "0614869",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://veronicasellshouston.com",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.veronicasellshouston.com",
   serviceAreas: [
     "Houston",
     "Sugar Land",

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Clock } from "lucide-react";
 import { getBlogPostBySlug, getRelatedBlogPosts, getAllBlogPostSlugs } from "@/lib/data/blog";
 import { BlogContent } from "@/components/blog-content-renderer";
+import { BlogAuthorBox } from "@/components/blog-author-box";
 import { BlogCard } from "@/components/blog-card";
 import { BlogViewTracker } from "@/components/blog-view-tracker";
 import { BlogShareButtons } from "@/components/blog-share-buttons";
@@ -45,7 +46,7 @@ export async function generateMetadata({
       description,
       type: "article",
       publishedTime: published,
-      images: ogImage ? [{ url: ogImage }] : undefined,
+      images: [{ url: ogImage ?? "/og-image.jpg", width: 1200, height: 630 }],
     },
   };
 }
@@ -62,21 +63,34 @@ export default async function BlogDetailPage({
   const related = await getRelatedBlogPosts(post);
   const published = post.published_at ?? post.created_at;
 
+  const authorName = post.author ?? siteConfig.name;
+  const isVeronica = authorName === siteConfig.name;
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "Article",
     headline: post.title,
     description: post.excerpt ?? undefined,
-    image: post.cover_image ?? undefined,
+    image: post.cover_image ?? `${siteConfig.siteUrl}/og-image.jpg`,
     datePublished: published,
-    author: {
-      "@type": "Person",
-      name: post.author ?? "Veronica Medellin",
-      url: `${siteConfig.siteUrl}/about`,
-    },
+    dateModified: post.updated_at ?? published,
+    author: isVeronica
+      ? {
+          "@type": "Person",
+          name: siteConfig.name,
+          url: `${siteConfig.siteUrl}/about`,
+          image: `${siteConfig.siteUrl}/veronica.jpg`,
+          jobTitle: "REALTOR®",
+          identifier: `TREC #${siteConfig.trecLicense}`,
+        }
+      : { "@type": "Person", name: authorName, url: `${siteConfig.siteUrl}/about` },
     publisher: {
-      "@type": "Person",
-      name: "Veronica Medellin",
+      "@type": "Organization",
+      name: siteConfig.brokerage,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.siteUrl}/veronica.jpg`,
+      },
     },
   };
 
@@ -124,6 +138,8 @@ export default async function BlogDetailPage({
         <article className="mt-10">
           <BlogContent content={post.content} />
         </article>
+
+        <BlogAuthorBox authorName={authorName} />
 
         {post.tags && post.tags.length > 0 && (
           <div className="mt-10 flex flex-wrap gap-2">

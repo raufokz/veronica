@@ -1,0 +1,15 @@
+{
+  "name": "Veronica Medellin, REALTOR®",
+  "short_name": "Veronica Medellin",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

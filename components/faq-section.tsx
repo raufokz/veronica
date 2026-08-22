@@ -25,8 +25,8 @@ export function FaqSection({ items, bg = "bg-sand" }: { items: FaqItem[]; bg?: s
     "@type": "FAQPage",
     mainEntity: items.map((item) => ({
       "@type": "Question",
-      name: item.q.en,
-      acceptedAnswer: { "@type": "Answer", text: item.a.en },
+      name: item.q[lang],
+      acceptedAnswer: { "@type": "Answer", text: item.a[lang] },
     })),
   };
 

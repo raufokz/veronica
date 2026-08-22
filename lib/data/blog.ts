@@ -92,6 +92,19 @@ export async function getAllBlogPostSlugs(): Promise<string[]> {
   return (data ?? []).map((row) => row.slug);
 }
 
+export async function getAllBlogPostsForSitemap(): Promise<
+  { slug: string; updated_at: string }[]
+> {
+  if (!isSupabaseConfigured()) return [];
+  const supabase = createStaticClient();
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("slug, updated_at")
+    .in("status", ["published", "scheduled"]);
+  if (error) return [];
+  return data ?? [];
+}
+
 export async function getRelatedBlogPosts(current: BlogPost, limit = 3): Promise<BlogPost[]> {
   if (!isSupabaseConfigured()) return [];
   const supabase = await createClient();
