@@ -191,6 +191,17 @@ export function FooterClient({ overrides }: { overrides?: FooterOverrides }) {
             <p>
               License Number #{licenseNumber} | {t(dict.footer.brokerageLine, lang)}
             </p>
+            <p className="text-white/50">
+              {lang === "es" ? "Trabajando con: " : "Working with: "}
+              <a
+                href="https://www.domesticrealestate.us/agents/veronica-medellin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-white transition-colors"
+              >
+                Domestic Real Estate
+              </a>
+            </p>
             <div className="flex flex-wrap justify-center lg:justify-start gap-x-4 gap-y-1 mt-1 text-white/40">
               <Link href="/legal/iabs" className="hover:underline hover:text-white">
                 {t(dict.footer.iabs, lang)}
@@ -209,7 +220,15 @@ export function FooterClient({ overrides }: { overrides?: FooterOverrides }) {
           {/* Equal Opportunity logos */}
           <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-right">
             <span className="text-[10px] uppercase tracking-wider text-white/40">
-              Website Powered By My Broker Search
+              Powered by{" "}
+              <a
+                href="https://raufokz.github.io/Abdur-Rauf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-white transition-colors"
+              >
+                Abdur Rauf
+              </a>
             </span>
             <div className="flex gap-2 items-center text-white/40" aria-hidden="true" title="Realtor & Equal Housing Opportunity logo compliance">
               <span className="font-semibold text-xs leading-none">®</span>

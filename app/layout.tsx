@@ -56,6 +56,11 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "en_US",
       type: "website",
     },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/favicon.ico",
+    },
     twitter: { card: "summary_large_image" },
   };
 }

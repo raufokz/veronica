@@ -61,10 +61,22 @@ export async function getUpcomingAppointments(limit = 5): Promise<Appointment[]>
 
 export async function getSiteSettings(): Promise<SiteSetting | null> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
-  if (error) {
-    console.error("[crm] getSiteSettings failed", error.message);
+  try {
+    const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
+    if (error) {
+      if (
+        error.message.includes("Could not find the table") ||
+        error.message.includes("does not exist") ||
+        error.code === "PGRST116"
+      ) {
+        console.warn("[crm] getSiteSettings: Table 'site_settings' not found in database. Using default fallback titles.");
+        return null;
+      }
+      console.error("[crm] getSiteSettings failed", error.message);
+      return null;
+    }
+    return data;
+  } catch (err) {
     return null;
   }
-  return data;
 }
