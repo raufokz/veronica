@@ -10,6 +10,7 @@ import { MobileDock } from "@/components/mobile-dock";
 import { SiteChrome } from "@/components/site-chrome";
 import { Toaster } from "@/components/ui/sonner";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
+import ClarityAnalytics from "@/components/clarity-analytics";
 import { siteConfig } from "@/lib/site-config";
 import { getSiteSettings } from "@/lib/data/crm";
 import type { Lang } from "@/lib/dict";
@@ -92,15 +93,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             gtag('config', 'G-FJFQBY04NL');
           `}
         </Script>
-        <Script id="microsoft-clarity" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "y6e8oyrzj5");
-          `}
-        </Script>
+        <ClarityAnalytics />
         <LanguageProvider initialLang={initialLang}>
           <a
             href="#main-content"
