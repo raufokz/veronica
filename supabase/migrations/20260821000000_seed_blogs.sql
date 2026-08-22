@@ -1,7 +1,41 @@
 ﻿-- =========================================================
--- Seed 10 blog posts
+-- Ensure blog_posts table exists, then seed 10 blog posts
 -- =========================================================
 
+create table if not exists public.blog_posts (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  title text not null,
+  slug text unique not null,
+  excerpt text,
+  content text not null default '',
+  category text,
+  cover_image text,
+  tags text[] default '{}',
+  status text not null default 'draft',
+  published_at timestamptz,
+  author text default 'Veronica Medellin',
+  meta_description text,
+  meta_title text,
+  og_image text,
+  view_count integer not null default 0
+);
+
+-- updated_at trigger
+create or replace function public.set_updated_at()
+returns trigger language plpgsql as $$
+begin
+  new.updated_at = now();
+  return new;
+end $$;
+
+drop trigger if exists blog_posts_set_updated_at on public.blog_posts;
+create trigger blog_posts_set_updated_at
+before update on public.blog_posts
+for each row execute function public.set_updated_at();
+
+-- Now insert the blog posts
 insert into public.blog_posts (title, slug, excerpt, content, category, status, published_at, author, meta_description, meta_title, tags)
 values
 
@@ -154,6 +188,8 @@ values
   'Clear Lake TX Neighborhood Guide | Living in Clear Lake',
   array['clear lake','houston neighborhoods','clear creek isd','nasa','community guide']
 );
+
+on conflict (slug) do nothing;
 
 -- Publish existing draft posts too if any
 update public.blog_posts set status = 'published', published_at = now() where status = 'draft';
